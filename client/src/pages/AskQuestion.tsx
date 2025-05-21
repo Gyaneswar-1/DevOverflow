@@ -35,7 +35,6 @@ export default function AskQuestion() {
       images,
     });
     toast("Event has been created");
-    // alert("Question submitted successfully! (This is just a frontend demo)");
   };
 
   return (

@@ -5,6 +5,7 @@ import Login from "@/pages/Login";
 import Profile from "@/pages/Profile";
 import QuestionDetail from "@/pages/QuestionDetail";
 import Register from "@/pages/Register";
+import Welcome from "@/pages/Welcome";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function RouterHandler() {
@@ -12,6 +13,7 @@ function RouterHandler() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -21,7 +23,7 @@ function RouterHandler() {
           <Route index element={<Profile />} />
           <Route path="edit" element={<EditProfile />} />
         </Route>
-        <Route path="ask" element={<AskQuestion/>} />
+        <Route path="ask" element={<AskQuestion />} />
       </Routes>
     </BrowserRouter>
   );
