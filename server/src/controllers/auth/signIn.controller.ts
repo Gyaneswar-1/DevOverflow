@@ -4,8 +4,9 @@ import db from "../../db/db.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { validatedEnv } from "../../helper/zodENVvalidation.js"
+import logger from "../../helper/logger.js"
 
-export const signIn = async (req: Request, res: Response):Promise<any> => {
+export const signIn = async (req: Request, res: Response): Promise<any> => {
     try {
         const { email, password, userID, fullName } = req.body
 
@@ -14,8 +15,8 @@ export const signIn = async (req: Request, res: Response):Promise<any> => {
                 email: email,
             },
         })
-        
-        if (isExistEmail?.email===email) {
+
+        if (isExistEmail?.email === email) {
             return res
                 .json(
                     new ApiResponse({
@@ -32,7 +33,7 @@ export const signIn = async (req: Request, res: Response):Promise<any> => {
             },
         })
 
-        if (isExistUserID?.userID===userID) {
+        if (isExistUserID?.userID === userID) {
             return res
                 .json(
                     new ApiResponse({
@@ -55,7 +56,7 @@ export const signIn = async (req: Request, res: Response):Promise<any> => {
         })
 
         const token = jwt.sign(
-            { email: result.email, userID: result.userID },
+            { id: result.id, email: result.email, userID: result.userID },
             validatedEnv.JWT_SECRET,
             { algorithm: "HS256" },
         )
@@ -76,12 +77,14 @@ export const signIn = async (req: Request, res: Response):Promise<any> => {
             )
             .status(200)
     } catch (error) {
+        logger.error(error)
         return res
             .json(
                 new ApiResponse({
                     message: "error in signin",
                     statusCode: 503,
                     data: error,
+                    success: false,
                 }),
             )
             .status(503)

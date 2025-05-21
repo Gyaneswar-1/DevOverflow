@@ -3,6 +3,7 @@ import db from "../../db/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validatedEnv } from "../../helper/zodENVvalidation.js";
+import logger from "../../helper/logger.js";
 export const signIn = async (req, res) => {
     try {
         const { email, password, userID, fullName } = req.body;
@@ -41,7 +42,7 @@ export const signIn = async (req, res) => {
                 fullName: fullName,
             },
         });
-        const token = jwt.sign({ email: result.email, userID: result.userID }, validatedEnv.JWT_SECRET, { algorithm: "HS256" });
+        const token = jwt.sign({ id: result.id, email: result.email, userID: result.userID }, validatedEnv.JWT_SECRET, { algorithm: "HS256" });
         res.cookie("token", `Bearer ${token}`, {
             httpOnly: true,
             secure: validatedEnv.NODE_ENV === "development",
@@ -56,11 +57,13 @@ export const signIn = async (req, res) => {
             .status(200);
     }
     catch (error) {
+        logger.error(error);
         return res
             .json(new ApiResponse({
             message: "error in signin",
             statusCode: 503,
             data: error,
+            success: false,
         }))
             .status(503);
     }

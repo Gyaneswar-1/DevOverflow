@@ -26,4 +26,6 @@ import healthRoute from "./routes/healthcheck.route.js";
 app.use("/api/v1", healthRoute);
 import authRoute from "./routes/userAuth.route.js";
 app.use("/api/v1/auth", authRoute);
+import questionsRoutes from "./routes/questions.route.js";
+app.use("/api/v1/questions", questionsRoutes);
 export { app };
