@@ -4,6 +4,7 @@ import { Router } from "express"
 import { upload } from "../middleware/multer.middleware.js"
 import { getQuestions } from "../controllers/questions/getQuestions.controller.js"
 import { getQuestionsById } from "../controllers/questions/getQuestionsById.controller.js"
+import { deleteQuestion } from "../controllers/questions/deleteQuestions.controller.js"
 
 const questionsRoutes = Router()
 questionsRoutes.post(
@@ -14,5 +15,6 @@ questionsRoutes.post(
 )
 questionsRoutes.get("/get", authMiddleware, getQuestions)
 questionsRoutes.get("/get/:id", authMiddleware, getQuestionsById)
+questionsRoutes.delete("/delete/:id", authMiddleware, deleteQuestion)
 
 export default questionsRoutes

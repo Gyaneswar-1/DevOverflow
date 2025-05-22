@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import logger from "./helper/logger.js";
 import morgan from "morgan";
 const app = express();
-const morganFormat = ":method :url :status";
+const morganFormat = ":method :url :status :response-time ms";
 app.use(morgan(morganFormat, {
     stream: {
         write: (message) => {
