@@ -14,18 +14,20 @@ datasource db {
 }
 
 model User {
-  id         String      @id @default(uuid())
-  email      String?     @unique @db.VarChar(255)
-  fullName   String?      @db.VarChar(100) 
-  userID   String?     @unique @db.VarChar(50)
-  password   String?     @db.VarChar(255)
-  questions  Questions[]
-  answers    Answers[]
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt()
-  isAdmin    Boolean     @default(false)
-  isVerified Boolean     @default(false)
-  count      Int         @default(0)
+  id           String      @id @default(uuid())
+  email        String?     @unique @db.VarChar(255)
+  fullName     String?     @db.VarChar(100)
+  userID       String?     @unique @db.VarChar(50)
+  password     String?     @db.VarChar(255)
+  questions    Questions[]
+  answers      Answers[]
+  profileImage Images?     @relation(fields: [profileImgId], references: [id])
+  profileImgId String?     @unique
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt()
+  isAdmin      Boolean     @default(false)
+  isVerified   Boolean     @default(false)
+  count        Int         @default(0)
 }
 
 model Questions {
@@ -33,6 +35,8 @@ model Questions {
   title       String?   @db.VarChar(255)
   images      Images[]
   answers     Answers[]
+  likes       Int       @default(0)
+  dislikes    Int       @default(0)
   description String?   @db.Text
   tags        String[]  @default(["no tag"])
   count       Int       @default(0)
@@ -44,9 +48,11 @@ model Questions {
 model Images {
   id         String    @id @default(uuid())
   url        String?   @db.VarChar(500)
+  fileId     String?   @db.VarChar(500)
   questionId String
   createdAt  DateTime  @default(now())
   question   Questions @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  user       User?     @relation()
 }
 
 model Answers {

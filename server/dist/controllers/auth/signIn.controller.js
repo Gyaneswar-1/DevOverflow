@@ -4,9 +4,25 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validatedEnv } from "../../helper/zodENVvalidation.js";
 import logger from "../../helper/logger.js";
+import { userSignupSchema } from "../../validations/userSignup.validation.js";
 export const signIn = async (req, res) => {
     try {
         const { email, password, userID, fullName } = req.body;
+        const validateSignin = userSignupSchema.safeParse({
+            email,
+            password,
+            userID,
+            fullName,
+        });
+        if (validateSignin.error) {
+            logger.error(validateSignin.error);
+            return res.status(500).json(new ApiResponse({
+                message: "Validation error",
+                statusCode: 500,
+                data: validateSignin.error.flatten().fieldErrors,
+                success: false,
+            }));
+        }
         const isExistEmail = await db.user.findUnique({
             where: {
                 email: email,
@@ -49,12 +65,7 @@ export const signIn = async (req, res) => {
             sameSite: "lax",
         });
         return res
-            .json(new ApiResponse({
-            message: "Login success",
-            statusCode: 200,
-            data: { fullName },
-        }))
-            .status(200);
+            .json(new ApiResponse({ message: "Login success", statusCode: 200, data: { fullName }, })).status(200);
     }
     catch (error) {
         logger.error(error);

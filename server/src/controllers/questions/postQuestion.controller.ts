@@ -4,6 +4,7 @@ import { type Request, type Response } from "express"
 import imagekit from "../../config/imageKit.js"
 import fs from "fs"
 import logger from "../../helper/logger.js"
+import { questionSchema } from "../../validations/questions.validation.js"
 
 export const postQuestion = async (
     req: Request | any,
@@ -12,6 +13,23 @@ export const postQuestion = async (
     try {
         const { id } = req.user
         const { title, description, tags } = req.body
+
+        const questionValidation = questionSchema.safeParse({
+            title,
+            description,
+            tags,
+        })
+
+        if (questionValidation.error) {
+            return res.status(400).json(
+                new ApiResponse({
+                    message: "validation error",
+                    statusCode: 400,
+                    success: false,
+                    data: questionValidation.error.flatten().fieldErrors,
+                }),
+            )
+        }
 
         const filePath = req.file.path
         const fileBuffer = fs.readFileSync(filePath)
@@ -49,6 +67,7 @@ export const postQuestion = async (
                 images: {
                     create: {
                         url: response.url,
+                        fileId: response.fileId,
                     },
                 },
             },

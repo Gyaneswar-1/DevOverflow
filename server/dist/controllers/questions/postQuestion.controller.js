@@ -2,17 +2,48 @@ import db from "../../db/db.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import imagekit from "../../config/imageKit.js";
 import fs from "fs";
+import logger from "../../helper/logger.js";
+import { questionSchema } from "../../validations/questions.validation.js";
 export const postQuestion = async (req, res) => {
     try {
         const { id } = req.user;
         const { title, description, tags } = req.body;
+        const questionValidation = questionSchema.safeParse({
+            title,
+            description,
+            tags,
+        });
+        if (questionValidation.error) {
+            return res.status(400).json(new ApiResponse({
+                message: "validation error",
+                statusCode: 400,
+                success: false,
+                data: questionValidation.error.flatten().fieldErrors,
+            }));
+        }
         const filePath = req.file.path;
         const fileBuffer = fs.readFileSync(filePath);
-        const response = await imagekit.upload({
-            file: fileBuffer,
-            fileName: req.file.originalname,
-        });
-        fs.unlinkSync(filePath);
+        let response;
+        try {
+            response = await imagekit.upload({
+                file: fileBuffer,
+                fileName: req.file.originalname,
+            });
+            fs.unlinkSync(filePath);
+        }
+        catch (error) {
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+            logger.error("error uploading image to ImageKit", error);
+            return res
+                .json(new ApiResponse({
+                message: "failed to upload image",
+                statusCode: 500,
+                success: false,
+            }))
+                .status(500);
+        }
         const result = await db.questions.create({
             data: {
                 createdBy: { connect: { id: id } },
@@ -22,13 +53,14 @@ export const postQuestion = async (req, res) => {
                 images: {
                     create: {
                         url: response.url,
+                        fileId: response.fileId,
                     },
                 },
             },
         });
         return res
             .json(new ApiResponse({
-            message: "Hello user",
+            message: "posted question successfully",
             statusCode: 200,
             success: true,
             data: result,
@@ -36,15 +68,17 @@ export const postQuestion = async (req, res) => {
             .status(200);
     }
     catch (error) {
+        logger.error("error occurred", error);
         return res
             .json(new ApiResponse({
-            message: "Error happen",
+            message: "An error occurred",
             data: { error },
-            statusCode: 200,
+            statusCode: 500,
             success: false,
         }))
-            .status(200);
+            .status(500);
     }
     finally {
+        db.$disconnect();
     }
 };

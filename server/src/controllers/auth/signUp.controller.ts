@@ -6,10 +6,24 @@ import bcrypt from "bcrypt"
 import db from "../../db/db.js"
 import { validatedEnv } from "../../helper/zodENVvalidation.js"
 import logger from "../../helper/logger.js"
+import { userSigninSchema } from "../../validations/userSignin.validation.js"
 
 export const signUp = async (req: Request, res: Response): Promise<any> => {
     try {
         const { email, password } = req.body
+
+        const validationResult = userSigninSchema.safeParse({ email, password })
+        if (validationResult.error) {
+            logger.error(validationResult.error)
+            return res.json(
+                new ApiResponse({
+                    message: "somthing went wrong",
+                    data: validationResult.error.flatten().fieldErrors,
+                    statusCode: 500,
+                    success: false,
+                }),
+            )
+        }
 
         const isExists = await db.user.findUnique({
             where: {

@@ -1,15 +1,22 @@
-import { ApiResponse } from "../../utils/ApiResponse.js";
 import db from "../../db/db.js";
-import logger from "../../helper/logger.js";
-export const getQuestions = async (req, res) => {
+import { ApiResponse } from "../../utils/ApiResponse.js";
+export const getQuestionsById = async (req, res) => {
     try {
-        const result = await db.questions.findMany({
+        const { id } = req.params;
+        const result = await db.questions.findUnique({
+            where: {
+                id: id,
+            },
             select: {
-                id: true,
                 title: true,
                 description: true,
                 tags: true,
                 createdAt: true,
+                images: {
+                    select: {
+                        url: true,
+                    },
+                },
                 createdBy: {
                     select: {
                         id: true,
@@ -29,14 +36,13 @@ export const getQuestions = async (req, res) => {
             },
         });
         return res.status(200).json(new ApiResponse({
-            message: "Questions fetched successfully",
+            message: "Question fetched successfully",
             data: result,
             statusCode: 200,
             success: true,
         }));
     }
     catch (error) {
-        logger.error(error);
         return res.status(500).json(new ApiResponse({
             message: "Internal server error",
             data: error,
