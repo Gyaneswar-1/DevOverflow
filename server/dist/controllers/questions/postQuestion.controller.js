@@ -1,24 +1,47 @@
+import db from "../../db/db.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
+import imagekit from "../../config/imageKit.js";
+import fs from "fs";
 export const postQuestion = async (req, res) => {
     try {
-        const { id, email, userID } = req.user;
-        const u = req.body;
+        const { id } = req.user;
+        const { title, description, tags } = req.body;
+        const filePath = req.file.path;
+        const fileBuffer = fs.readFileSync(filePath);
+        const response = await imagekit.upload({
+            file: fileBuffer,
+            fileName: req.file.originalname,
+        });
+        fs.unlinkSync(filePath);
+        const result = await db.questions.create({
+            data: {
+                createdBy: { connect: { id: id } },
+                title: title,
+                description: description,
+                tags: tags,
+                images: {
+                    create: {
+                        url: response.url,
+                    },
+                },
+            },
+        });
         return res
             .json(new ApiResponse({
             message: "Hello user",
-            data: { id, email, userID, u },
             statusCode: 200,
             success: true,
+            data: result,
         }))
             .status(200);
     }
     catch (error) {
         return res
             .json(new ApiResponse({
-            message: "Hello user",
-            data: {},
+            message: "Error happen",
+            data: { error },
             statusCode: 200,
-            success: true,
+            success: false,
         }))
             .status(200);
     }
