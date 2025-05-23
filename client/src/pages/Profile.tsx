@@ -18,8 +18,25 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAsync } from "@/store/actions/user.action";
+import type { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+
 
 export default function Profile() {
+
+  const dispatch = useDispatch<AppDispatch>()
+  const user_ = useSelector((state:RootState)=>state.userReducer)
+
+  useEffect(() => {
+    async function getData() {
+      await dispatch(setUserAsync());
+      console.log(user_);
+    }
+    getData();
+  }, [dispatch]);
+  
   // Mock user data
   const user = {
     name: "Alex Chen",

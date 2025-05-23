@@ -25,7 +25,7 @@ app.use(
 )
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(cookieParser())
 
 import healthRoute from "./routes/healthcheck.route.js"
