@@ -28,4 +28,6 @@ import authRoute from "./routes/userAuth.route.js";
 app.use("/api/v1/auth", authRoute);
 import questionsRoutes from "./routes/questions.route.js";
 app.use("/api/v1/questions", questionsRoutes);
+import userProfileRouter from "./routes/userProfile.route.js";
+app.use("/api/v1/profile", userProfileRouter);
 export { app };

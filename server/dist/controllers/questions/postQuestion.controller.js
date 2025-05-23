@@ -21,28 +21,28 @@ export const postQuestion = async (req, res) => {
                 data: questionValidation.error.flatten().fieldErrors,
             }));
         }
-        const filePath = req.file.path;
-        const fileBuffer = fs.readFileSync(filePath);
-        let response;
-        try {
-            response = await imagekit.upload({
-                file: fileBuffer,
-                fileName: req.file.originalname,
-            });
-            fs.unlinkSync(filePath);
-        }
-        catch (error) {
-            if (fs.existsSync(filePath)) {
+        let response = null;
+        if (req.file.path && req.file) {
+            const filePath = req.file.path;
+            const fileBuffer = fs.readFileSync(filePath);
+            try {
+                response = await imagekit.upload({
+                    file: fileBuffer,
+                    fileName: req.file.originalname,
+                });
                 fs.unlinkSync(filePath);
             }
-            logger.error("error uploading image to ImageKit", error);
-            return res
-                .json(new ApiResponse({
-                message: "failed to upload image",
-                statusCode: 500,
-                success: false,
-            }))
-                .status(500);
+            catch (error) {
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+                logger.error("error uploading image to ImageKit", error);
+                return res.status(500).json(new ApiResponse({
+                    message: "failed to upload image",
+                    statusCode: 500,
+                    success: false,
+                }));
+            }
         }
         const result = await db.questions.create({
             data: {
@@ -50,33 +50,31 @@ export const postQuestion = async (req, res) => {
                 title: title,
                 description: description,
                 tags: tags,
-                images: {
-                    create: {
-                        url: response.url,
-                        fileId: response.fileId,
-                    },
-                },
+                images: response
+                    ? {
+                        create: {
+                            url: response.url,
+                            fileId: response.fileId,
+                        },
+                    }
+                    : undefined,
             },
         });
-        return res
-            .json(new ApiResponse({
+        return res.status(200).json(new ApiResponse({
             message: "posted question successfully",
             statusCode: 200,
             success: true,
             data: result,
-        }))
-            .status(200);
+        }));
     }
     catch (error) {
         logger.error("error occurred", error);
-        return res
-            .json(new ApiResponse({
+        return res.status(500).json(new ApiResponse({
             message: "An error occurred",
             data: { error },
             statusCode: 500,
             success: false,
-        }))
-            .status(500);
+        }));
     }
     finally {
         db.$disconnect();

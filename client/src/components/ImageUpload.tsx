@@ -16,7 +16,7 @@ interface ImageUploadProps {
 export function ImageUpload({
   images,
   setImages,
-  maxImages = 3,
+  maxImages = 1,
 }: ImageUploadProps) {
   const [dragActive, setDragActive] = useState(false);
 
