@@ -1,4 +1,6 @@
 import { z } from "zod";
+import dotenv from "dotenv";
+dotenv.config();
 const envSchema = z.object({
     JWT_SECRET: z.string().nonempty("JWT_SECRET is required"),
     DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),

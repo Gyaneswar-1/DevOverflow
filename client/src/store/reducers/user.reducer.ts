@@ -12,8 +12,8 @@ const initialState: UserProfileInterface = {
     url: "",
     fileId: "",
   },
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: "",
+  updatedAt: "",
   isVerified: false,
   isAdmin: false,
 };
@@ -42,8 +42,8 @@ const userSlice = createSlice({
         url: "",
         fileId: "",
       };
-      state.createdAt = new Date();
-      state.updatedAt = new Date();
+      state.createdAt = "";
+      state.updatedAt = "";
       state.isVerified = false;
       state.isAdmin = false;
     },
@@ -56,6 +56,8 @@ const userSlice = createSlice({
       .addCase(
         setUserAsync.fulfilled,
         (state, action:PayloadAction<UserProfileInterface>) => {
+          console.log("dff",action.payload);
+          
           state.id = action.payload.id;
           state.email = action.payload.email;
           state.fullName = action.payload.fullName;

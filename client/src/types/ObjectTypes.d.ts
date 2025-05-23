@@ -4,8 +4,8 @@ export interface UserProfileInterface {
   fullName: String;
   userID: String;
   profileImage: Images;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: String;
+  updatedAt: String;
   isVerified: Boolean;
   isAdmin: Boolean;
 }
