@@ -17,7 +17,7 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
             logger.error(validationResult.error)
             return res.json(
                 new ApiResponse({
-                    message: "somthing went wrong",
+                    message: "Validation Error",
                     data: validationResult.error.flatten().fieldErrors,
                     statusCode: 500,
                     success: false,
@@ -36,12 +36,12 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
             return res
                 .json(
                     new ApiResponse({
-                        message: "either email or password wrong",
-                        statusCode: 203,
+                        message: "either email did not exist try Signup",
+                        statusCode: 500,
                         success: false,
                     }),
                 )
-                .status(203)
+                .status(500)
         }
 
         const passwordCompare = await bcrypt.compare(
@@ -71,7 +71,7 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
             return res.json(
                 new ApiResponse({
                     message: "either email or password wrong",
-                    statusCode: 200,
+                    statusCode: 400,
                     success: false,
                 }),
             )

@@ -16,9 +16,9 @@ export const signIn = async (req, res) => {
         });
         if (validateSignin.error) {
             logger.error(validateSignin.error);
-            return res.status(500).json(new ApiResponse({
+            return res.status(400).json(new ApiResponse({
                 message: "Validation error",
-                statusCode: 500,
+                statusCode: 400,
                 data: validateSignin.error.flatten().fieldErrors,
                 success: false,
             }));
@@ -32,9 +32,9 @@ export const signIn = async (req, res) => {
             return res
                 .json(new ApiResponse({
                 message: "Email already Exists",
-                statusCode: 204,
+                statusCode: 300,
             }))
-                .status(204);
+                .status(300);
         }
         const isExistUserID = await db.user.findUnique({
             where: {
@@ -45,9 +45,9 @@ export const signIn = async (req, res) => {
             return res
                 .json(new ApiResponse({
                 message: "UserID already Exists",
-                statusCode: 204,
+                statusCode: 300,
             }))
-                .status(204);
+                .status(300);
         }
         const encodedPassword = await bcrypt.hash(password, 12);
         const result = await db.user.create({

@@ -9,26 +9,30 @@ export const signInService = async ({
   userID,
 }: signInInterface): Promise<{ success: boolean; message: string }> => {
   try {
+    
+    console.log("The problem",fullName, email, password, userID);
     const response = await axios.post(
       `${API}/auth/signin`,
       { email, fullName, userID, password },
       { withCredentials: true }
     );
-    if (response.status === 200) {
+    console.log("The problem",response);
+    
+    if (response.data.statusCode === 200) {
       return {
         success: true,
-        message: "Sign in successful",
+        message: response.data.message,
       };
     } else {
       return {
         success: false,
-        message: "Sign in failed",
+        message: response.data.message,
       };
     }
   } catch (error) {
     return {
       success: false,
-      message: "Sign in failed",
+      message: `Sign in failed ${error}`,
     };
   }
 };

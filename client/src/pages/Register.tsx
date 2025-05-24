@@ -35,6 +35,8 @@ export default function Register() {
       password: password,
       userID: username,
     });
+    console.log("log",result);
+    
 
     if (result.success === true) {
       navigate("/");
@@ -43,7 +45,6 @@ export default function Register() {
       toast(`${result.message}`);
     }
 
-    alert("Registration successful! (This is just a frontend demo)");
   };
 
   return (

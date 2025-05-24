@@ -21,22 +21,23 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserAsync } from "@/store/actions/user.action";
 import type { AppDispatch, RootState } from "../store/store";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 
 export default function Profile() {
+  const dispatch = useDispatch<AppDispatch>();
+  const user_ = useSelector((state: RootState) => state.userReducer);
 
-  const dispatch = useDispatch<AppDispatch>()
-  const user_ = useSelector((state:RootState)=>state.userReducer)
+useEffect(() => {
+  async function getData() {
+    await dispatch(setUserAsync());
+  }
+  getData();
+}, [dispatch]);
 
-  useEffect(() => {
-    async function getData() {
-      await dispatch(setUserAsync());
-      console.log(user_);
-    }
-    getData();
-  }, [dispatch]);
-  
+useEffect(() => {
+  console.log("user data:", user_);
+}, [user_]);
+
   // Mock user data
   const user = {
     name: "Alex Chen",

@@ -12,17 +12,17 @@ export const signUpService = async ({
       { email, password },
       { withCredentials: true }
     );
-    console.log(response);
+    console.log(response.data.statusCode);
     
-    if (response.status === 200) {
+    if (response.data.statusCode === 200) {
       return {
         success: true,
-        message: "Sign up successful",
+        message: response.data.message,
       };
     } else {
       return {
         success: false,
-        message: "Sign up failed",
+        message: response.data.message,
       };
     }
   } catch (error) {

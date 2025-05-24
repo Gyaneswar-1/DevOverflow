@@ -32,6 +32,8 @@ export default function Login() {
     if (response.success) {
       navigate("/");
       toast("welcome back");
+    }else{
+      toast(response.message)
     }
   };
 

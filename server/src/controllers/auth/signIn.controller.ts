@@ -21,10 +21,10 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
         if (validateSignin.error) {
             logger.error(validateSignin.error)
 
-            return res.status(500).json(
+            return res.status(400).json(
                 new ApiResponse({
                     message: "Validation error",
-                    statusCode: 500,
+                    statusCode: 400,
                     data: validateSignin.error.flatten().fieldErrors,
                     success: false,
                 }),
@@ -42,10 +42,10 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
                 .json(
                     new ApiResponse({
                         message: "Email already Exists",
-                        statusCode: 204,
+                        statusCode: 300,
                     }),
                 )
-                .status(204)
+                .status(300)
         }
 
         const isExistUserID = await db.user.findUnique({
@@ -59,10 +59,10 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
                 .json(
                     new ApiResponse({
                         message: "UserID already Exists",
-                        statusCode: 204,
+                        statusCode: 300,
                     }),
                 )
-                .status(204)
+                .status(300)
         }
 
         const encodedPassword = await bcrypt.hash(password, 12)
@@ -91,7 +91,7 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
         return res
             .json(
                 new ApiResponse({message: "Login success",statusCode: 200,data: { fullName },}),).status(200)
-    } catch (error) {
+    } catch (error ) {
         logger.error(error)
         return res
             .json(

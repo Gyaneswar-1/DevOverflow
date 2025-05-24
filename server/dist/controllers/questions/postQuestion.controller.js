@@ -22,7 +22,7 @@ export const postQuestion = async (req, res) => {
             }));
         }
         let response = null;
-        if (req.file.path && req.file) {
+        if (req.file && req.file.path) {
             const filePath = req.file.path;
             const fileBuffer = fs.readFileSync(filePath);
             try {
