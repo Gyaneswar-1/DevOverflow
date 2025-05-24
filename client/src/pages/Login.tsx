@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,21 +19,34 @@ import { Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpService } from "../service/signup.service";
 import { toast } from "sonner";
+import { userSigninSchema } from "../validation/userSignin.validation";
+import type { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type UserSigninSchema = z.infer<typeof userSigninSchema>;
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserSigninSchema>({
+    resolver: zodResolver(userSigninSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await signUpService({ email, password });
-    
+  const handleForm: SubmitHandler<UserSigninSchema> = async (data) => {
+    setIsLoading(true);
+    const response = await signUpService(data);
+
     if (response.success) {
+      setIsLoading(false);
       navigate("/");
       toast("welcome back");
-    }else{
-      toast(response.message)
+    } else {
+      setIsLoading(false);
+      toast(response.message);
     }
   };
 
@@ -65,17 +78,18 @@ export default function Login() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(handleForm)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                type="email"
+                type="text"
                 placeholder="m@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -87,17 +101,22 @@ export default function Login() {
                   Forgot password?
                 </Link>
               </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <Input id="password" type="password" {...register("password")} />
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
-            <Button type="submit" className="w-full">
-              Sign In
-            </Button>
+            {isLoading ? (
+              <Button disabled className="w-full">
+                Loading...
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Sign In
+              </Button>
+            )}
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">

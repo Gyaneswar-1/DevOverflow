@@ -17,29 +17,47 @@ import {
   LogOut,
   ThumbsUp,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserAsync } from "@/store/actions/user.action";
 import type { AppDispatch, RootState } from "../store/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { logoutService } from "@/service/logout.service";
+import React from "react";
+import { clearUser } from "@/store/reducers/user.reducer";
 
 export default function Profile() {
+  const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const user_ = useSelector((state: RootState) => state.userReducer);
+  const user = useSelector((state: RootState) => state.userReducer);
 
-useEffect(() => {
-  async function getData() {
-    await dispatch(setUserAsync());
+  useEffect(() => {
+    if (!user.id) {
+      dispatch(setUserAsync());
+    }
+  }, [dispatch, user.id]);
+
+  const handleLogout = async () => {
+    try {
+      setLoading(true); // Set loading state to true
+      await logoutService();
+      dispatch(clearUser()); // Clear the user from the store
+      navigate("/welcome"); // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setLoading(false); // Reset loading state
+    }
+  };
+
+  if (!user.id) {
+    return <p>Loading...</p>; // Show a loading state while fetching user data
   }
-  getData();
-}, [dispatch]);
-
-useEffect(() => {
-  console.log("user data:", user_);
-}, [user_]);
 
   // Mock user data
-  const user = {
+  const user_ = {
     name: "Alex Chen",
     username: "alexchen",
     image: "/placeholder.svg?height=100&width=100",
@@ -123,17 +141,14 @@ useEffect(() => {
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage
-                    src={user.image || "/placeholder.svg"}
-                    alt={user.name}
-                  />
+                  <AvatarImage src="/placeholder.svg" alt={user.fullName} />
                   <AvatarFallback className="text-2xl">
-                    {user.initials}
+                    {user.fullName.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
               </div>
-              <CardTitle className="text-2xl">{user.name}</CardTitle>
-              <CardDescription>@{user.username}</CardDescription>
+              <CardTitle className="text-2xl">{user.fullName}</CardTitle>
+              <CardDescription>@{user.userID}</CardDescription>
               <div className="mt-2 flex justify-center gap-2">
                 <Link to="/profile/edit">
                   <Button variant="outline" size="sm">
@@ -149,15 +164,21 @@ useEffect(() => {
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <p className="whitespace-pre-line text-sm">{user.bio}</p>
-                <p className="text-sm text-muted-foreground">{user.location}</p>
-                <p className="text-sm text-muted-foreground">{user.joinDate}</p>
+                <p className="text-sm text-muted-foreground">
+                  {user.city || "no city"}, {user.country || "no country"}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {`Joined ${formatDistanceToNow(new Date(user.createdAt), {
+                    addSuffix: true,
+                  })}`}
+                </p>
               </div>
 
               <div className="rounded-lg bg-muted p-4">
                 <h3 className="mb-2 font-semibold">Reputation & Badges</h3>
                 <div className="mb-2 flex items-center gap-2">
                   <span className="text-lg font-bold">
-                    {user.reputation.toLocaleString()}
+                    {user_.reputation.toLocaleString()}
                   </span>
                   <span className="text-sm text-muted-foreground">
                     reputation
@@ -166,37 +187,42 @@ useEffect(() => {
                 <div className="flex gap-4">
                   <div className="flex items-center gap-1">
                     <Badge className="bg-amber-500">●</Badge>
-                    <span className="text-sm">{user.badges.gold}</span>
+                    <span className="text-sm">{user_.badges.gold}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Badge className="bg-gray-400">●</Badge>
-                    <span className="text-sm">{user.badges.silver}</span>
+                    <span className="text-sm">{user_.badges.silver}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Badge className="bg-amber-700">●</Badge>
-                    <span className="text-sm">{user.badges.bronze}</span>
+                    <span className="text-sm">{user_.badges.bronze}</span>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2 rounded-lg bg-muted p-4 text-center">
                 <div>
-                  <p className="text-lg font-bold">{user.stats.questions}</p>
+                  <p className="text-lg font-bold">{user_.stats.questions}</p>
                   <p className="text-xs text-muted-foreground">Questions</p>
                 </div>
                 <div>
-                  <p className="text-lg font-bold">{user.stats.answers}</p>
+                  <p className="text-lg font-bold">{user_.stats.answers}</p>
                   <p className="text-xs text-muted-foreground">Answers</p>
                 </div>
                 <div>
-                  <p className="text-lg font-bold">{user.stats.accepted}</p>
+                  <p className="text-lg font-bold">{user_.stats.accepted}</p>
                   <p className="text-xs text-muted-foreground">Accepted</p>
                 </div>
               </div>
 
-              <Button variant="destructive" className="w-full">
+              <Button
+                variant="destructive"
+                className="w-full"
+                onClick={handleLogout}
+                disabled={loading}
+              >
                 <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
+                {loading ? "Logging Out..." : "Log Out"}
               </Button>
             </CardContent>
           </Card>

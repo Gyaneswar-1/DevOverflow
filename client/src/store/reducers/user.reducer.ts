@@ -8,6 +8,9 @@ const initialState: UserProfileInterface = {
   email: "",
   fullName: "",
   userID: "",
+  bio: "",
+  city: "",
+  country: "",
   profileImage: {
     url: "",
     fileId: "",
@@ -16,6 +19,7 @@ const initialState: UserProfileInterface = {
   updatedAt: "",
   isVerified: false,
   isAdmin: false,
+
 };
 
 const userSlice = createSlice({
@@ -32,6 +36,9 @@ const userSlice = createSlice({
       state.updatedAt = action.payload.updatedAt;
       state.isVerified = action.payload.isVerified;
       state.isAdmin = action.payload.isAdmin;
+      state.bio = action.payload.bio;
+      state.city = action.payload.city;
+      state.country = action.payload.country;
     },
     clearUser: (state) => {
       state.id = "";
@@ -42,6 +49,9 @@ const userSlice = createSlice({
         url: "",
         fileId: "",
       };
+      state.bio = "";
+      state.city = "";
+      state.country = "";
       state.createdAt = "";
       state.updatedAt = "";
       state.isVerified = false;
@@ -67,10 +77,13 @@ const userSlice = createSlice({
           state.updatedAt = action.payload.updatedAt;
           state.isVerified = action.payload.isVerified;
           state.isAdmin = action.payload.isAdmin;
+          state.bio = action.payload.bio;
+          state.city = action.payload.city;
+          state.country = action.payload.country;
         }
       );
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser,clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;

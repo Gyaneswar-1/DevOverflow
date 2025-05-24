@@ -19,32 +19,38 @@ import { Github } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInService } from "@/service/signin.service";
 import { toast } from "sonner";
+import { userSignupSchema } from "@/validation/userSignup.validation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 export default function Register() {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = await signInService({
-      fullName: name,
-      email: email,
-      password: password,
-      userID: username,
-    });
-    console.log("log",result);
-    
+  type UserSignupSchema = z.infer<typeof userSignupSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserSignupSchema>({
+    resolver: zodResolver(userSignupSchema),
+  });
+
+  const handleForm: SubmitHandler<UserSignupSchema> = async (data) => {
+    setIsLoading(true);
+    const { fullName, userID, email, password } = data;
+    const result = await signInService({ fullName, userID, email, password });
 
     if (result.success === true) {
+      setIsLoading(false);
       navigate("/");
       toast(`Welcome ${name}`);
     } else {
+      setIsLoading(false);
       toast(`${result.message}`);
     }
-
   };
 
   return (
@@ -75,27 +81,31 @@ export default function Register() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit(handleForm)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="fullName">Full Name</Label>
               <Input
-                id="name"
+                id="fullName"
                 placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                {...register("fullName")}
               />
+              {errors.fullName && (
+                <p className="text-xs text-red-500">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="userID">Username</Label>
               <Input
-                id="username"
+                id="userID"
                 placeholder="johndoe"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
+                {...register("userID")}
               />
+              {errors.userID && (
+                <p className="text-xs text-red-500">{errors.userID.message}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -104,29 +114,32 @@ export default function Register() {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-xs text-red-500">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                Password must be at least 8 characters long
-              </p>
+              <Input id="password" type="password" {...register("password")} />
+              {errors.password && (
+                <p className="text-xs text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
-            <Button type="submit" className="w-full">
-              Create Account
-            </Button>
+            {isLoading ? (
+              <Button disabled className="w-full">
+                Loading...
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Create Account
+              </Button>
+            )}
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">

@@ -1,13 +1,16 @@
 export interface UserProfileInterface {
-  id: String;
-  email: String;
-  fullName: String;
-  userID: String;
+  id: string;
+  email: string;
+  fullName: string;
+  userID: string;
   profileImage: Images;
-  createdAt: String;
-  updatedAt: String;
+  createdAt: string;
+  updatedAt: string;
   isVerified: Boolean;
   isAdmin: Boolean;
+  bio: string;
+  city: string;
+  country: string;
 }
 
 export interface signUpInterface {
@@ -16,7 +19,7 @@ export interface signUpInterface {
 }
 
 export interface signInInterface {
-  fullName: string;
+  fullName?: string;
   userID: string;
   email: string;
   password: string;

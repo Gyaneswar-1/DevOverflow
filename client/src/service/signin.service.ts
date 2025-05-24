@@ -9,15 +9,14 @@ export const signInService = async ({
   userID,
 }: signInInterface): Promise<{ success: boolean; message: string }> => {
   try {
-    
-    console.log("The problem",fullName, email, password, userID);
+    console.log("The problem", fullName, email, password, userID);
     const response = await axios.post(
       `${API}/auth/signin`,
       { email, fullName, userID, password },
       { withCredentials: true }
     );
-    console.log("The problem",response);
-    
+    console.log("The problem", response);
+
     if (response.data.statusCode === 200) {
       return {
         success: true,
