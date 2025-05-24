@@ -2,6 +2,7 @@ import AskQuestion from "@/pages/AskQuestion";
 import EditProfile from "@/pages/EditProfile";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 import Profile from "@/pages/Profile";
 import QuestionDetail from "@/pages/QuestionDetail";
 import Register from "@/pages/Register";
@@ -24,6 +25,7 @@ function RouterHandler() {
           <Route path="edit" element={<EditProfile />} />
         </Route>
         <Route path="ask" element={<AskQuestion />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

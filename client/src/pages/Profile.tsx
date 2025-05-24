@@ -41,19 +41,19 @@ export default function Profile() {
 
   const handleLogout = async () => {
     try {
-      setLoading(true); // Set loading state to true
+      setLoading(true); 
       await logoutService();
-      dispatch(clearUser()); // Clear the user from the store
-      navigate("/welcome"); // Redirect to login page
+      dispatch(clearUser());
+      navigate("/welcome"); 
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false); 
     }
   };
 
   if (!user.id) {
-    return <p>Loading...</p>; // Show a loading state while fetching user data
+    return <p>Loading...</p>; 
   }
 
   // Mock user data

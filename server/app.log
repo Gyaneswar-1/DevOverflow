@@ -500,3 +500,6 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"401\",\"responseTime\":\"3009.591\"}","timestamp":"2025-05-24T17:02:45.561Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"401\",\"responseTime\":\"3015.778\"}","timestamp":"2025-05-24T17:02:59.073Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"401\",\"responseTime\":\"3007.479\"}","timestamp":"2025-05-24T17:03:02.084Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"OPTIONS\",\"url\":\"/api/v1/auth/signup\",\"status\":\"204\",\"responseTime\":\"0.453\"}","timestamp":"2025-05-24T17:25:30.946Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"gyaneswarrout12345@gmail.com","timestamp":"2025-05-24T17:25:34.000Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/signup\",\"status\":\"200\",\"responseTime\":\"3328.885\"}","timestamp":"2025-05-24T17:25:34.278Z"}
