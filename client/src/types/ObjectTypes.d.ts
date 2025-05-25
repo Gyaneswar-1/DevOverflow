@@ -35,3 +35,8 @@ export interface Question {
   description: string;
   tags: string[];
 }
+
+
+export interface AuthState {
+  isAuthenticated: boolean;
+}

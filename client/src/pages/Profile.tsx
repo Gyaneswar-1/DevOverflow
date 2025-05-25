@@ -26,6 +26,7 @@ import { useEffect } from "react";
 import { logoutService } from "@/service/logout.service";
 import React from "react";
 import { clearUser } from "@/store/reducers/user.reducer";
+import { logout } from "@/store/reducers/auth.reducer";
 
 export default function Profile() {
   const [loading, setLoading] = React.useState(false);
@@ -44,6 +45,7 @@ export default function Profile() {
       setLoading(true); 
       await logoutService();
       dispatch(clearUser());
+      dispatch(logout())
       navigate("/welcome"); 
     } catch (error) {
       console.error("Logout failed:", error);

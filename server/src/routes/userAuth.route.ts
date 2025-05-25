@@ -3,10 +3,13 @@ import { signUp } from "../controllers/auth/signUp.controller.js"
 import { signIn } from "../controllers/auth/signIn.controller.js"
 import { logout } from "../controllers/auth/logout.controller.js"
 import { Apidelay } from "../middleware/Apidelay.middleware.js"
+import { authMiddleware } from "../middleware/auth.middleware.js"
+import { isAuthenticated } from "../controllers/auth/isAuthenticated.controller.js"
 
 const authRoute = Router()
 authRoute.post("/signin",Apidelay, signIn)
 authRoute.post("/signup",Apidelay,signUp)
-authRoute.post("/logout",Apidelay,logout)
+authRoute.post("/logout",Apidelay,authMiddleware,logout)
+authRoute.get("/is-auth",Apidelay,authMiddleware,isAuthenticated)
 
 export default authRoute
