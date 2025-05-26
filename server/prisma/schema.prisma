@@ -20,8 +20,8 @@ model User {
   userID       String?     @unique @db.VarChar(50)
   password     String?     @db.VarChar(255)
   city         String?     @db.VarChar(255)
-  country      String?      @db.VarChar(255)
-  bio          String?      @db.VarChar(500)
+  country      String?     @db.VarChar(255)
+  bio          String?     @db.VarChar(500)
   questions    Questions[]
   answers      Answers[]
   profileImage Images?     @relation(fields: [profileImgId], references: [id])
@@ -37,8 +37,8 @@ model Questions {
   title       String?   @db.VarChar(255)
   images      Images[]
   answers     Answers[]
-  upvote       Int       @default(0)
-  downvote     Int       @default(0)
+  upvote      Int       @default(0)
+  downvote    Int       @default(0)
   description String?   @db.Text
   tags        String[]  @default(["no tag"])
   createdAt   DateTime  @default(now())
@@ -61,6 +61,8 @@ model Answers {
   content     String?   @db.Text
   questionId  String
   createdById String
+  upvote      Int       @default(0)
+  downvote    Int       @default(0)
   isAccepted  Boolean   @default(false)
   createdAt   DateTime  @default(now())
   question    Questions @relation(fields: [questionId], references: [id], onDelete: Cascade)

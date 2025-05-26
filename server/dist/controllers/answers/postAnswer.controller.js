@@ -1,10 +1,23 @@
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import db from "../../db/db.js";
 import logger from "../../helper/logger.js";
+import { answerSchema } from "../../validations/answer.validation.js";
 export const postAnswer = async (req, res) => {
     try {
         const { id } = req.user;
         const { qid, content } = req.body;
+        const validate = answerSchema.safeParse({
+            qid,
+            content,
+        });
+        if (validate.error) {
+            return res.status(500).json(new ApiResponse({
+                message: "Validation error",
+                statusCode: 500,
+                success: false,
+                data: validate.error.flatten().fieldErrors,
+            }));
+        }
         const isExist = await db.questions.findUnique({
             where: { id: qid },
             select: { id: true },
