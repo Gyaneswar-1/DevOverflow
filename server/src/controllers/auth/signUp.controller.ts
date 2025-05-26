@@ -59,6 +59,7 @@ export const signUp = async (req: Request, res: Response): Promise<any> => {
                 httpOnly: true,
                 secure: validatedEnv.NODE_ENV === "development",
                 sameSite: "lax",
+                maxAge: 24 * 60 * 60 * 1000,
             })
             return res.json(
                 new ApiResponse({

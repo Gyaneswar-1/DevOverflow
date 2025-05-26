@@ -1,8 +1,7 @@
 import axios from "axios";
 import { API } from "./API";
 import type { signInInterface } from "@/types/ObjectTypes";
-import { useDispatch } from "react-redux";
-import {  loginSuccess } from "@/store/reducers/auth.reducer";
+
 
 export const signInService = async ({
   fullName,
@@ -10,7 +9,6 @@ export const signInService = async ({
   password,
   userID,
 }: signInInterface): Promise<{ success: boolean; message: string }> => {
-  const dispatch = useDispatch();
 
   try {
     console.log("The problem", fullName, email, password, userID);
@@ -22,7 +20,6 @@ export const signInService = async ({
     console.log("The problem", response);
 
     if (response.data.statusCode === 200) {
-      dispatch(loginSuccess(response.data.user));
 
       return {
         success: true,

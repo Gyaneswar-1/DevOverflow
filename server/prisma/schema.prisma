@@ -30,7 +30,6 @@ model User {
   updatedAt    DateTime    @updatedAt()
   isAdmin      Boolean     @default(false)
   isVerified   Boolean     @default(false)
-  count        Int         @default(0)
 }
 
 model Questions {
@@ -38,11 +37,10 @@ model Questions {
   title       String?   @db.VarChar(255)
   images      Images[]
   answers     Answers[]
-  likes       Int       @default(0)
-  dislikes    Int       @default(0)
+  upvote       Int       @default(0)
+  downvote     Int       @default(0)
   description String?   @db.Text
   tags        String[]  @default(["no tag"])
-  count       Int       @default(0)
   createdAt   DateTime  @default(now())
   createdById String
   createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Cascade)

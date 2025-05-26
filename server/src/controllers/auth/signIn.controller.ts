@@ -86,6 +86,7 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
             httpOnly: true,
             secure: validatedEnv.NODE_ENV === "development",
             sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
         })
 
         return res

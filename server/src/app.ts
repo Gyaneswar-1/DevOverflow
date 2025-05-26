@@ -36,5 +36,7 @@ import questionsRoutes from "./routes/questions.route.js"
 app.use("/api/v1/questions", questionsRoutes)
 import userProfileRouter from "./routes/userProfile.route.js"
 app.use("/api/v1/profile", userProfileRouter)
+import answerRouter from "./routes/answers.route.js"
+app.use("/api/v1/answers", answerRouter)
 
 export { app }

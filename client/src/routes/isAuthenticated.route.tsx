@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { type RootState } from "../store/store";
 import { loginSuccess } from "@/store/reducers/auth.reducer";
 import { checkAuth } from "@/service/checkAuth.service";
+import Navbar from "@/components/Navbar";
 
 function isAuthenticated() {
   const navigate = useNavigate();
@@ -28,7 +29,12 @@ function isAuthenticated() {
   }, [navigate, dispatch]);
 
   if (isAuthenticated) {
-    return <Outlet />;
+    return (
+      <>
+        <Navbar />
+        <Outlet />;
+      </>
+    );
   }
 
   return null;

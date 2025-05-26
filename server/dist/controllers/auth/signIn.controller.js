@@ -63,6 +63,7 @@ export const signIn = async (req, res) => {
             httpOnly: true,
             secure: validatedEnv.NODE_ENV === "development",
             sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
         });
         return res
             .json(new ApiResponse({ message: "Login success", statusCode: 200, data: { fullName }, })).status(200);

@@ -1,6 +1,4 @@
-"use client";
 
-import type React from "react";
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -45,7 +43,7 @@ export default function Register() {
 
     if (result.success === true) {
       setIsLoading(false);
-      navigate("/");
+      navigate("/",{ replace: true });
       toast(`Welcome ${name}`);
     } else {
       setIsLoading(false);

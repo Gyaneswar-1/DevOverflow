@@ -13,6 +13,11 @@ export interface UserProfileInterface {
   country: string;
 }
 
+export interface UserStateInterface extends UserProfileInterface {
+  isLoading: boolean;
+  isError: boolean;
+}
+
 export interface signUpInterface {
   email: string;
   password: string;
@@ -35,7 +40,6 @@ export interface Question {
   description: string;
   tags: string[];
 }
-
 
 export interface AuthState {
   isAuthenticated: boolean;

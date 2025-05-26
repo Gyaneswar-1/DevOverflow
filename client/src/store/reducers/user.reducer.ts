@@ -1,9 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { UserProfileInterface } from "../../types/ObjectTypes";
+import type {
+  UserProfileInterface,
+  UserStateInterface,
+} from "../../types/ObjectTypes";
 import { setUserAsync } from "../actions/user.action";
 
-const initialState: UserProfileInterface = {
+const initialState: UserStateInterface = {
   id: "",
   email: "",
   fullName: "",
@@ -19,14 +22,15 @@ const initialState: UserProfileInterface = {
   updatedAt: "",
   isVerified: false,
   isAdmin: false,
-
+  isLoading: false,
+  isError: false,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserProfileInterface>) => {
+    setUser: (state, action: PayloadAction<UserStateInterface>) => {
       state.id = action.payload.id;
       state.email = action.payload.email;
       state.fullName = action.payload.fullName;
@@ -60,14 +64,13 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(setUserAsync.pending, () => {
+      .addCase(setUserAsync.pending, (state) => {
         console.log("Pending");
+        state.isLoading = true;
       })
       .addCase(
         setUserAsync.fulfilled,
-        (state, action:PayloadAction<UserProfileInterface>) => {
-          console.log("dff",action.payload);
-          
+        (state, action: PayloadAction<UserProfileInterface>) => {
           state.id = action.payload.id;
           state.email = action.payload.email;
           state.fullName = action.payload.fullName;
@@ -80,10 +83,16 @@ const userSlice = createSlice({
           state.bio = action.payload.bio;
           state.city = action.payload.city;
           state.country = action.payload.country;
+          state.isLoading = false;
+          state.isError = false;
         }
-      );
+      )
+      .addCase(setUserAsync.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+      });
   },
 });
 
-export const { setUser,clearUser } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;

@@ -54,10 +54,6 @@ export default function Profile() {
     }
   };
 
-  if (!user.id) {
-    return <p>Loading...</p>; 
-  }
-
   // Mock user data
   const user_ = {
     name: "Alex Chen",

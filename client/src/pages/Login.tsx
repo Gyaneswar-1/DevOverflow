@@ -1,6 +1,3 @@
-"use client";
-
-import type React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -43,7 +40,7 @@ export default function Login() {
 
     if (response.success) {
       setIsLoading(false);
-      navigate("/");
+      navigate("/", { replace: true });
       toast("welcome back");
     } else {
       setIsLoading(false);
