@@ -5,17 +5,19 @@ import { type Request, type Response } from "express"
 import imagekit from "../../config/imageKit.js"
 
 export const deleteQuestion = async (
-    req: Request,
+    req: Request | any,
     res: Response,
 ): Promise<any> => {
     try {
-        const { id } = req.params
+        const { qid } = req.params
+        const { id } = req.user
 
-        const imageData = await db.questions.findUnique({
+        const question = await db.questions.findUnique({
             where: {
-                id: id,
+                id: qid,
             },
             select: {
+                createdById: true,
                 images: {
                     select: {
                         fileId: true,
@@ -23,16 +25,38 @@ export const deleteQuestion = async (
                 },
             },
         })
-        if (imageData !== null && imageData.images.length > 0) {
-            for (const i of imageData.images) {
+
+        if (!question) {
+            return res.status(404).json(
+                new ApiResponse({
+                    message: "Question not found",
+                    statusCode: 404,
+                    success: false,
+                }),
+            )
+        }
+
+        if (question.createdById !== id) {
+            return res.status(403).json(
+                new ApiResponse({
+                    message: "You are not authorized to delete this question",
+                    statusCode: 403,
+                    success: false,
+                }),
+            )
+        }
+
+        if (question.images.length > 0) {
+            for (const i of question.images) {
                 if (i.fileId !== null) {
                     await imagekit.deleteFile(i.fileId)
                 }
             }
         }
+
         await db.questions.delete({
             where: {
-                id: id,
+                id: qid,
             },
         })
 

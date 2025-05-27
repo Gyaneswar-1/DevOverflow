@@ -1,35 +1,26 @@
-import type { Request, Response } from "express"
 import db from "../../db/db.js"
 import { ApiResponse } from "../../utils/ApiResponse.js"
-import logger from "../../helper/logger.js"
+import { type Request, type Response } from "express"
 
-export const getProfile = async (
+export const getQuestionsById = async (
     req: Request | any,
     res: Response,
 ): Promise<any> => {
     try {
         const { id } = req.user
-
-        const result = await db.user.findUnique({
+        const result = await db.questions.findMany({
             where: {
-                id: id,
+                createdById: id,
             },
             select: {
-                id: true,
-                email: true,
-                fullName: true,
-                userID: true,
-                profileImage: true,
-                bio: true,
-                city: true,
-                country: true,
+                title: true,
+                description: true,
+                upvote: true,
+                downvote: true,
+                tags: true,
                 createdAt: true,
-                updatedAt: true,
-                isVerified: true,
-                isAdmin: true,
                 _count: {
                     select: {
-                        questions: true,
                         answers: true,
                     },
                 },
@@ -38,17 +29,17 @@ export const getProfile = async (
 
         return res.status(200).json(
             new ApiResponse({
-                message: "Profile fetched successfully",
+                message: "Question fetched successfully",
                 data: result,
                 statusCode: 200,
                 success: true,
             }),
         )
     } catch (error) {
-        logger.error(error)
         return res.status(500).json(
             new ApiResponse({
                 message: "Internal server error",
+                data: error,
                 statusCode: 500,
                 success: false,
             }),

@@ -36,9 +36,22 @@ export interface Images {
 }
 
 export interface Question {
+  id: string;
   title: string;
   description: string;
   tags: string[];
+  createdAt: string;
+  createdBy: {
+    id: string;
+    fullName: string;
+    profileImage: string;
+  };
+  answers: number;
+}
+
+export interface QuestionState extends Question {
+  isLoading: boolean;
+  isError: boolean;
 }
 
 export interface AuthState {

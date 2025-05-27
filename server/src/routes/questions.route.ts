@@ -17,6 +17,6 @@ questionsRoutes.post(
 )
 questionsRoutes.get("/get",Apidelay, authMiddleware, getQuestions)
 questionsRoutes.get("/get/:id",Apidelay, authMiddleware, getQuestionsById)
-questionsRoutes.delete("/delete/:id",Apidelay, authMiddleware, deleteQuestion)
+questionsRoutes.delete("/delete/:qid",Apidelay, authMiddleware, deleteQuestion)
 
 export default questionsRoutes
