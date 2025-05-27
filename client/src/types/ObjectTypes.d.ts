@@ -20,6 +20,7 @@ export interface QuestionDetailInterface {
   tags: string[];
   createdAt: string;
   images: string[];
+  upvote: number;
   createdBy: {
     id: string;
     fullName: string;

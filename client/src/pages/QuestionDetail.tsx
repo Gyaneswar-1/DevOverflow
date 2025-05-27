@@ -23,10 +23,11 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { getQuestionByID } from "@/service/getQuestionByID";
 import type { QuestionDetailInterface } from "@/types/ObjectTypes";
+import { formatDistanceToNow } from "date-fns";
 
 export default function QuestionDetail() {
-  const [answer, setAnswer] = useState<QuestionDetailInterface>({});
-  const [Question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [Question, setQuestion] = useState<QuestionDetailInterface>();
   const [images, setImages] = useState<string[]>([]);
   const [showAnswerForm, setShowAnswerForm] = useState(false);
   const { id } = useParams();
@@ -37,26 +38,15 @@ export default function QuestionDetail() {
         const response = await getQuestionByID(id!);
         if (response.success) {
           setQuestion(response.data!);
+          console.log("Question data:", response.data);
+          
         }
       } catch {}
     }
+    QuestionID();
   }, []);
 
   // Mock data for a question
-  const question = {
-    id: id,
-    title: "How do I implement authentication in Next.js?",
-    content:
-      "I'm building a Next.js application and need to add user authentication. What's the best approach? I've looked into NextAuth.js but I'm not sure if that's the best option. I also considered Firebase Authentication and Auth0. Has anyone implemented authentication in Next.js recently? What were your experiences and which solution would you recommend for a production application?",
-    author: "Sarah Johnson",
-    authorImage: "/placeholder.svg?height=40&width=40",
-    authorInitials: "SJ",
-    authorReputation: 1250,
-    tags: ["next.js", "authentication", "web-dev"],
-    votes: 24,
-    timePosted: "2 hours ago",
-    images: ["/placeholder.svg?height=300&width=600"],
-  };
 
   // Mock data for answers
   const answers = [
@@ -97,6 +87,7 @@ export default function QuestionDetail() {
     setImages([]);
   };
 
+ 
   return (
     <main className="container mx-auto max-w-4xl px-4 py-8">
       <Link
@@ -107,74 +98,79 @@ export default function QuestionDetail() {
         Back to Questions
       </Link>
 
-      <Card className="mb-8">
-        <CardHeader className="space-y-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">{Question.title}</h1>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {question.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
+      {Question && (
+        <Card className="mb-8">
+          <CardHeader className="space-y-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-2xl font-bold">{Question.title}</h1>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {Question.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="icon">
+                    <ThumbsUp className="h-4 w-4" />
+                  </Button>
+                  <span className="font-medium">{Question.upvote || 0}</span>
+                  <Button variant="ghost" size="icon">
+                    <ThumbsDown className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex items-center gap-1">
-                <Button variant="ghost" size="icon">
-                  <ThumbsUp className="h-4 w-4" />
-                </Button>
-                <span className="font-medium">{question.votes}</span>
-                <Button variant="ghost" size="icon">
-                  <ThumbsDown className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage
-                  src={question.authorImage || "/placeholder.svg"}
-                  alt={question.author}
-                />
-                <AvatarFallback>{question.authorInitials}</AvatarFallback>
-              </Avatar>
-              <span>{question.author}</span>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs">
-                {question.authorReputation.toLocaleString()} rep
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Avatar className="h-6 w-6">
+                  <AvatarImage
+                    src={
+                      Question.createdBy.profileImage?.url || "/placeholder.svg"
+                    }
+                    alt={Question.createdBy.fullName}
+                  />
+                  <AvatarFallback>
+                    {Question.createdBy.fullName.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span>{Question.createdBy.fullName}</span>
+              </div>
+              <span className="flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {`Posted ${formatDistanceToNow(new Date(Question.createdAt), {
+                  addSuffix: true,
+                })}`}
               </span>
             </div>
-            <span className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
-              {question.timePosted}
-            </span>
-          </div>
-        </CardHeader>
+          </CardHeader>
 
-        <CardContent className="space-y-4">
-          <p className="whitespace-pre-line">{question.content}</p>
+          <CardContent className="space-y-4">
+            <p className="whitespace-pre-line">{Question.description}</p>
 
-          {question.images.length > 0 && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {question.images.map((image, index) => (
-                <div
-                  key={index}
-                  className="relative h-[200px] overflow-hidden rounded-md border"
-                >
-                  <img
-                    src={image || "/placeholder.svg"}
-                    alt={`Question image ${index + 1}`}
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            {Question.images && Question.images.length > 0 && (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {Question.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative h-[200px] overflow-hidden rounded-md border"
+                  >
+                    <img
+                      src={image.url || "/placeholder.svg"}
+                      alt={`Question image ${index + 1}`}
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-semibold">
