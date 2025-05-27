@@ -10,6 +10,7 @@ export const getQuestions = async (req, res) => {
                 description: true,
                 tags: true,
                 createdAt: true,
+                upvote: true,
                 createdBy: {
                     select: {
                         id: true,

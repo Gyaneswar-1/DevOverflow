@@ -3,10 +3,13 @@ import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { ThumbsUp, MessageCircle, Clock } from 'lucide-react'
 import { Badge } from './ui/badge'
 import  { Link } from 'react-router-dom'
+import type { QuestionInterface } from '@/types/ObjectTypes'
 
-const HomeCards = ({question}:any) => {
+const HomeCards = ({question}:{question:QuestionInterface}) => {
+  console.log("dfsdfd",question);
+  
   return (
-    <div>
+    <div >
         <Link
             to={`/questions/${question.id}`}
             key={question.id}
@@ -19,18 +22,18 @@ const HomeCards = ({question}:any) => {
                   <div className="flex items-center gap-2">
                     <span className="flex items-center gap-1 text-sm text-muted-foreground">
                       <ThumbsUp className="h-4 w-4" />
-                      {question.votes}
+                      {question.upvote}
                     </span>
                     <span className="flex items-center gap-1 text-sm text-muted-foreground">
                       <MessageCircle className="h-4 w-4" />
-                      {question.answers}
+                      {question._count.answers}
                     </span>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="line-clamp-2 text-muted-foreground">
-                  {question.content}
+                  {question.description}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {question.tags.map((tag:string) => (
@@ -45,18 +48,18 @@ const HomeCards = ({question}:any) => {
                   <div className="flex items-center gap-2">
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={question.authorImage || "/placeholder.svg"}
-                        alt={question.author}
+                        src={question.createdBy.profileImage }
+                        alt={question.createdBy.fullName}
                       />
-                      <AvatarFallback>{question.authorInitials}</AvatarFallback>
+                      <AvatarFallback>G</AvatarFallback>
                     </Avatar>
                     <span className="text-sm font-medium">
-                      {question.author}
+                      {question.createdBy.fullName}
                     </span>
                   </div>
                   <span className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
-                    {question.timePosted}
+                    {question.createdAt}
                   </span>
                 </div>
               </CardFooter>

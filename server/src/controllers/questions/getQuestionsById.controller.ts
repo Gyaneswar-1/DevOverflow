@@ -13,6 +13,7 @@ export const getQuestionsById = async (
                 id: id,
             },
             select: {
+                id: true,
                 title: true,
                 description: true,
                 tags: true,

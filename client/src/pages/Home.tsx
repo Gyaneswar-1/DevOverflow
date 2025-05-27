@@ -1,56 +1,34 @@
 import { Button } from "@/components/ui/button";
 
 import HomeCards from "@/components/HomeCards";
+import { getQuestionsService } from "@/service/getQuestions.service";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuestionAsync } from "../store/actions/question.action";
+import { type AppDispatch, type RootState } from "@/store/store";
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
+  const question = useSelector((state: RootState) => state.questionReducer);
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        dispatch(setQuestionAsync());
+        console.log("Question data:",question);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchQuestions();
+  }, []);
 
   // Mock data for questions
-  const questions = [
-    {
-      id: 1,
-      title: "How do I implement authentication in Next.js?",
-      content:
-        "I'm building a Next.js application and need to add user authentication. What's the best approach?",
-      author: "Sarah Johnson",
-      authorImage: "/placeholder.svg?height=40&width=40",
-      authorInitials: "SJ",
-      tags: ["next.js", "authentication", "web-dev"],
-      votes: 24,
-      answers: 8,
-      timePosted: "2 hours ago",
-    },
-    {
-      id: 2,
-      title: "What's the difference between useMemo and useCallback?",
-      content:
-        "I'm confused about when to use useMemo vs useCallback in React. Can someone explain?",
-      author: "Alex Chen",
-      authorImage: "/placeholder.svg?height=40&width=40",
-      authorInitials: "AC",
-      tags: ["react", "hooks", "javascript"],
-      votes: 32,
-      answers: 12,
-      timePosted: "5 hours ago",
-    },
-    {
-      id: 3,
-      title: "Best practices for responsive design in 2023?",
-      content:
-        "What are the current best practices for creating responsive web designs in 2023?",
-      author: "Miguel Rodriguez",
-      authorImage: "/placeholder.svg?height=40&width=40",
-      authorInitials: "MR",
-      tags: ["css", "responsive-design", "ui-ux"],
-      votes: 18,
-      answers: 6,
-      timePosted: "1 day ago",
-    },
-  ];
+ 
 
   return (
     <main className="container mx-auto px-4 py-8">
-    
-
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Recent Questions</h2>
         <div className="flex gap-2">
@@ -67,8 +45,8 @@ export default function Home() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
-        {questions.map((question) => (
-          <HomeCards question={question}/>
+        {question.questions.map((question) => (
+          <HomeCards key={question.id} question={question} />
         ))}
       </div>
     </main>

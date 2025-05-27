@@ -13,6 +13,23 @@ export interface UserProfileInterface {
   country: string;
 }
 
+export interface QuestionDetailInterface {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  createdAt: string;
+  images: string[];
+  createdBy: {
+    id: string;
+    fullName: string;
+    profileImage: Images;
+  };
+  _count: {
+    answers: number;
+  };
+}
+
 export interface UserStateInterface extends UserProfileInterface {
   isLoading: boolean;
   isError: boolean;
@@ -35,7 +52,7 @@ export interface Images {
   url: string;
 }
 
-export interface Question {
+export interface QuestionInterface {
   id: string;
   title: string;
   description: string;
@@ -46,13 +63,12 @@ export interface Question {
     fullName: string;
     profileImage: string;
   };
-  answers: number;
+  upvote:number;
+  _count:{
+    answers: number;
+  }
 }
 
-export interface QuestionState extends Question {
-  isLoading: boolean;
-  isError: boolean;
-}
 
 export interface AuthState {
   isAuthenticated: boolean;

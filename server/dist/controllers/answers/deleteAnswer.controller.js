@@ -7,36 +7,47 @@ export const deleteAnswer = async (req, res) => {
         const { id } = req.user;
         if (!aid) {
             return res.status(400).json(new ApiResponse({
-                message: "answer id is not provided",
+                message: "Answer ID is not provided",
                 statusCode: 400,
                 success: false,
             }));
         }
-        const result = await db.answers.delete({
+        const answer = await db.answers.findUnique({
             where: {
                 id: aid,
-                createdById: id
             },
             select: {
                 id: true,
-                createdById: true
+                createdById: true,
             },
         });
-        if (result.id !== aid) {
-            return res.status(400).json(new ApiResponse({
-                message: "answer not found ",
-                statusCode: 400,
+        if (!answer) {
+            return res.status(404).json(new ApiResponse({
+                message: "Answer not found",
+                statusCode: 404,
                 success: false,
             }));
         }
+        if (answer.createdById !== id) {
+            return res.status(403).json(new ApiResponse({
+                message: "You are not authorized to delete this answer",
+                statusCode: 403,
+                success: false,
+            }));
+        }
+        await db.answers.delete({
+            where: {
+                id: aid,
+            },
+        });
         return res.status(200).json(new ApiResponse({
-            message: "answer deleted successfully ",
+            message: "Answer deleted successfully",
             statusCode: 200,
             success: true,
         }));
     }
     catch (error) {
-        logger.error("Error happend", error);
+        logger.error("Error happened", error);
         return res.status(500).json(new ApiResponse({
             message: "Internal server error",
             statusCode: 500,

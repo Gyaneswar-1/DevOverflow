@@ -15,6 +15,7 @@ export const getQuestions = async (
                 description: true,
                 tags: true,
                 createdAt: true,
+                upvote:true,
                 createdBy: {
                     select: {
                         id: true,

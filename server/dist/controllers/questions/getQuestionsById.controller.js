@@ -8,6 +8,7 @@ export const getQuestionsById = async (req, res) => {
                 id: id,
             },
             select: {
+                id: true,
                 title: true,
                 description: true,
                 tags: true,

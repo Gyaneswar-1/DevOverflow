@@ -1,8 +1,6 @@
-"use client";
-
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,12 +21,26 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { getQuestionByID } from "@/service/getQuestionByID";
+import type { QuestionDetailInterface } from "@/types/ObjectTypes";
 
 export default function QuestionDetail() {
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState<QuestionDetailInterface>({});
+  const [Question, setQuestion] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [showAnswerForm, setShowAnswerForm] = useState(false);
   const { id } = useParams();
+
+  useEffect(() => {
+    async function QuestionID() {
+      try {
+        const response = await getQuestionByID(id!);
+        if (response.success) {
+          setQuestion(response.data!);
+        }
+      } catch {}
+    }
+  }, []);
 
   // Mock data for a question
   const question = {
@@ -99,7 +111,7 @@ export default function QuestionDetail() {
         <CardHeader className="space-y-4">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold">{question.title}</h1>
+              <h1 className="text-2xl font-bold">{Question.title}</h1>
               <div className="mt-2 flex flex-wrap gap-2">
                 {question.tags.map((tag) => (
                   <Badge key={tag} variant="secondary">
