@@ -16,7 +16,6 @@ const initialState: UserStateInterface = {
   country: "",
   profileImage: {
     url: "",
-    fileId: "",
   },
   createdAt: "",
   updatedAt: "",
@@ -51,7 +50,6 @@ const userSlice = createSlice({
       state.userID = "";
       state.profileImage = {
         url: "",
-        fileId: "",
       };
       state.bio = "";
       state.city = "";

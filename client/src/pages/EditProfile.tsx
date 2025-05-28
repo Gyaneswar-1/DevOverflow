@@ -11,23 +11,28 @@ import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChevronLeft, Upload } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import type { RootState } from "@/store/store"
+import { useSelector } from "react-redux"
 
 export default function EditProfile() {
   const navigate = useNavigate()
+    const user = useSelector((state: RootState) => state.userReducer);
+console.log("user", user);
+
 
   // Mock user data - in a real app this would be fetched from the backend
-  const [user, setUser] = useState({
-    name: "Alex Chen",
-    username: "alexchen",
-    image: "/placeholder.svg?height=100&width=100",
-    initials: "AC",
-    bio: "Full-stack developer with 5 years of experience. Passionate about React, Next.js, and TypeScript.",
-    location: "San Francisco, CA",
-    website: "https://alexchen.dev",
-    email: "alex@example.com",
-  })
+  // const [user, setUser] = useState({
+  //   name: "Alex Chen",
+  //   username: "alexchen",
+  //   image: "/placeholder.svg?height=100&width=100",
+  //   initials: "AC",
+  //   bio: "Full-stack developer with 5 years of experience. Passionate about React, Next.js, and TypeScript.",
+  //   location: "San Francisco, CA",
+  //   website: "https://alexchen.dev",
+  //   email: "alex@example.com",
+  // })
 
-  const [profileImage, setProfileImage] = useState<string | null>(user.image)
+  const [profileImage, setProfileImage] = useState<string | null>(user.profileImage?.url || "")
   const [isUploading, setIsUploading] = useState(false)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,14 +53,14 @@ export default function EditProfile() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setUser((prev) => ({ ...prev, [name]: value }))
+    // const { name, value } = e.target
+    // setUser((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // In a real app, this would submit to a backend
-    const updatedUser = { ...user, image: profileImage || user.image }
+    const updatedUser = { ...user, image: profileImage || user.profileImage.url }
     console.log("Updated user:", updatedUser)
     alert("Profile updated successfully! (This is just a frontend demo)")
     navigate("/profile")
@@ -81,8 +86,8 @@ export default function EditProfile() {
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={profileImage || user.image} alt={user.name} />
-                  <AvatarFallback className="text-2xl">{user.initials}</AvatarFallback>
+                  <AvatarImage src={profileImage || user.profileImage?.url} alt={user.fullName} />
+                  <AvatarFallback className="text-2xl">{user.fullName.slice(0)}</AvatarFallback>
                 </Avatar>
                 <div className="absolute -bottom-2 -right-2">
                   <Label htmlFor="profile-image" className="cursor-pointer">
@@ -106,12 +111,12 @@ export default function EditProfile() {
 
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" name="name" value={user.name} onChange={handleChange} required />
+              <Input id="name" name="name" value={user.fullName} onChange={handleChange} required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
-              <Input id="username" name="username" value={user.username} onChange={handleChange} required />
+              <Input id="username" name="username" value={user.userID} onChange={handleChange} required />
             </div>
 
             <div className="space-y-2">
@@ -130,12 +135,12 @@ export default function EditProfile() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="location">Location</Label>
-                <Input id="location" name="location" value={user.location} onChange={handleChange} />
+                <Input id="location" name="location" value={user.city} onChange={handleChange} />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="website">Website</Label>
-                <Input id="website" name="website" type="url" value={user.website} onChange={handleChange} />
+                <Label htmlFor="website">Country</Label>
+                <Input id="website" name="website" type="text" value={user.country} onChange={handleChange} />
               </div>
             </div>
 

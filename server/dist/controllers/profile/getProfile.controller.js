@@ -13,7 +13,11 @@ export const getProfile = async (req, res) => {
                 email: true,
                 fullName: true,
                 userID: true,
-                profileImage: true,
+                profileImage: {
+                    select: {
+                        url: true,
+                    },
+                },
                 bio: true,
                 city: true,
                 country: true,

@@ -19,7 +19,11 @@ export const getProfile = async (
                 email: true,
                 fullName: true,
                 userID: true,
-                profileImage: true,
+                profileImage: {
+                    select: {
+                        url: true,
+                    },
+                },
                 bio: true,
                 city: true,
                 country: true,

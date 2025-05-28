@@ -3,7 +3,9 @@ export interface UserProfileInterface {
   email: string;
   fullName: string;
   userID: string;
-  profileImage: Images;
+  profileImage: {
+    url: string;
+  };
   createdAt: string;
   updatedAt: string;
   isVerified: Boolean;
