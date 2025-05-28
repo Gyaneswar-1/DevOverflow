@@ -1,6 +1,3 @@
-"use client";
-
-import type React from "react";
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -18,28 +15,40 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ImageUpload";
 import { ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
+import { questionSchema } from "@/validation/question.validation";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { submitQuestion } from "@/service/submitQuestion.service";
 
 export default function AskQuestion() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState("");
-  const [images, setImages] = useState<string[]>([]);
+  type QuestionSchemaType = z.infer<typeof questionSchema>;
+  const [images, setImages] = useState<File[]>([]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<QuestionSchemaType>({
+    resolver: zodResolver(questionSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      tags: [],
+    },
+  });
+
+  const onSubmit = (data: QuestionSchemaType) => {
     // In a real app, this would submit to a backend
-    console.log({
-      title,
-      content,
-      tags: tags.split(",").map((tag) => tag.trim()),
-      images,
-    });
-    toast("Event has been created");
+    console.log(data, images);
+    submitQuestion(data, images[0])
+    
+    toast("Question has been created");
   };
 
   return (
     <main className="container mx-auto max-w-3xl px-4 py-8">
-      <Link
+      <Link 
         to="/"
         className="mb-6 flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
       >
@@ -55,31 +64,35 @@ export default function AskQuestion() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
                 placeholder="e.g. How do I center a div with Tailwind CSS?"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
+                {...register("title")}
               />
+              {errors.title && (
+                <p className="text-sm text-red-500">{errors.title.message}</p>
+              )}
               <p className="text-xs text-muted-foreground">
                 Be specific and summarize your problem
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Details</Label>
+              <Label htmlFor="description">Details</Label>
               <Textarea
-                id="content"
+                id="description"
                 placeholder="Explain your question in detail..."
                 className="min-h-[200px]"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                required
+                {...register("description")}
               />
+              {errors.description && (
+                <p className="text-sm text-red-500">
+                  {errors.description.message}
+                </p>
+              )}
               <p className="text-xs text-muted-foreground">
                 Include all the information someone would need to answer your
                 question
@@ -91,9 +104,11 @@ export default function AskQuestion() {
               <Input
                 id="tags"
                 placeholder="e.g. javascript,react,tailwind"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
+                {...register("tags")}
               />
+              {errors.tags && (
+                <p className="text-sm text-red-500">{errors.tags.message}</p>
+              )}
               <p className="text-xs text-muted-foreground">
                 Add up to 5 tags to describe what your question is about (comma
                 separated)
@@ -101,11 +116,18 @@ export default function AskQuestion() {
             </div>
 
             <div className="space-y-2">
-              <Label>Images (optional)</Label>
-              <ImageUpload images={images} setImages={setImages} />
-              <p className="text-xs text-muted-foreground">
-                Add images to help explain your problem
-              </p>
+              <Label htmlFor="image">Image (Optional)</Label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) {
+                    setImages([files[0]]);
+                  }
+                }}
+              />
             </div>
 
             <Button type="submit" className="w-full">

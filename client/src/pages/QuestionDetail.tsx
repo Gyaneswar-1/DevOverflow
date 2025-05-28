@@ -24,6 +24,7 @@ import { Link, useParams } from "react-router-dom";
 import { getQuestionByID } from "@/service/getQuestionByID";
 import type { QuestionDetailInterface } from "@/types/ObjectTypes";
 import { formatDistanceToNow } from "date-fns";
+import Loader from "@/components/Loader";
 
 export default function QuestionDetail() {
   const [answer, setAnswer] = useState("");
@@ -87,7 +88,6 @@ export default function QuestionDetail() {
     setImages([]);
   };
 
- 
   return (
     <main className="container mx-auto max-w-4xl px-4 py-8">
       <Link
@@ -98,7 +98,7 @@ export default function QuestionDetail() {
         Back to Questions
       </Link>
 
-      {Question && (
+      {Question ? (
         <Card className="mb-8">
           <CardHeader className="space-y-4">
             <div className="flex items-start justify-between">
@@ -170,6 +170,10 @@ export default function QuestionDetail() {
             )}
           </CardContent>
         </Card>
+      ):(
+        <div className="flex items-center justify-center mb-8 w-full">
+          <Loader />
+        </div>
       )}
 
       <div className="mb-6 flex items-center justify-between">

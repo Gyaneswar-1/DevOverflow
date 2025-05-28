@@ -8,12 +8,18 @@ export const postQuestion = async (req, res) => {
     try {
         const { id } = req.user;
         const { title, description, tags } = req.body;
+        logger.info(title);
+        logger.info(description);
+        logger.info(tags);
+        const tagArray = [];
+        tags.split(",").map((tag) => tagArray.push(tag.trim()));
         const questionValidation = questionSchema.safeParse({
             title,
             description,
-            tags,
+            tagArray,
         });
         if (questionValidation.error) {
+            logger.error("validation error", questionValidation.error);
             return res.status(400).json(new ApiResponse({
                 message: "validation error",
                 statusCode: 400,
@@ -49,7 +55,7 @@ export const postQuestion = async (req, res) => {
                 createdBy: { connect: { id: id } },
                 title: title,
                 description: description,
-                tags: tags,
+                tags: tagArray,
                 images: response
                     ? {
                         create: {

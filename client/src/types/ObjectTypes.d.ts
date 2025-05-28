@@ -19,7 +19,11 @@ export interface QuestionDetailInterface {
   description: string;
   tags: string[];
   createdAt: string;
-  images: string[];
+  images: [
+    {
+      url: string;
+    }
+  ];
   upvote: number;
   createdBy: {
     id: string;
@@ -64,12 +68,11 @@ export interface QuestionInterface {
     fullName: string;
     profileImage: string;
   };
-  upvote:number;
-  _count:{
+  upvote: number;
+  _count: {
     answers: number;
-  }
+  };
 }
-
 
 export interface AuthState {
   isAuthenticated: boolean;

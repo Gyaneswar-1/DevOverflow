@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 
 import HomeCards from "@/components/HomeCards";
-import { getQuestionsService } from "@/service/getQuestions.service";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuestionAsync } from "../store/actions/question.action";
 import { type AppDispatch, type RootState } from "@/store/store";
@@ -15,17 +14,13 @@ export default function Home() {
     async function fetchQuestions() {
       try {
         dispatch(setQuestionAsync());
-        console.log("Question data:",question);
-        
+        console.log("Question data:", question);
       } catch (error) {
         console.log(error);
       }
     }
     fetchQuestions();
   }, []);
-
-  // Mock data for questions
- 
 
   return (
     <main className="container mx-auto px-4 py-8">

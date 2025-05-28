@@ -1,4 +1,3 @@
-// middlewares/multer.js or multer.ts
 import multer from "multer";
 
 const storage = multer.diskStorage({
