@@ -1,0 +1,7 @@
+    JWT_SECRET="hello"
+    DATABASE_URL="postgresql://postgres:12345@localhost:5432/QNA"
+    NODE_ENV="development"
+    IMAGEKIT_PUBLIC_KEY="public_/UBvbN4+5SejkDwAdGDKn7XQlNs="
+    IMAGEKIT_PRIVATE_KEY="private_YnAul3f6+P3Zvf/VWsMjBqtRYF8="
+    IMAGEKIT_URL_ENDPOINT="https://ik.imagekit.io/yhbo0zn8m"
+

@@ -2858,3 +2858,28 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PUT\",\"url\":\"/api/v1/profile/edit\",\"status\":\"401\",\"responseTime\":\"3099.139\"}","timestamp":"2025-05-28T15:31:14.472Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Editing profile for user ID:","timestamp":"2025-05-28T15:35:03.926Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Editing profile for user ID:","timestamp":"2025-05-28T15:35:58.427Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"OPTIONS\",\"url\":\"/api/v1/auth/signin\",\"status\":\"204\",\"responseTime\":\"1.626\"}","timestamp":"2025-05-30T07:35:28.095Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/signin\",\"status\":\"200\",\"responseTime\":\"3352.211\"}","timestamp":"2025-05-30T07:35:31.451Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"200\",\"responseTime\":\"3071.599\"}","timestamp":"2025-05-30T07:35:34.570Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"200\",\"responseTime\":\"3079.680\"}","timestamp":"2025-05-30T07:35:34.580Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"200\",\"responseTime\":\"3072.658\"}","timestamp":"2025-05-30T07:35:37.692Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"200\",\"responseTime\":\"3160.522\"}","timestamp":"2025-05-30T07:35:37.782Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"200\",\"responseTime\":\"3176.119\"}","timestamp":"2025-05-30T07:35:37.796Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"200\",\"responseTime\":\"3174.726\"}","timestamp":"2025-05-30T07:35:37.797Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"304\",\"responseTime\":\"3066.856\"}","timestamp":"2025-05-30T07:35:44.068Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"200\",\"responseTime\":\"3067.148\"}","timestamp":"2025-05-30T07:35:45.805Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"304\",\"responseTime\":\"3153.644\"}","timestamp":"2025-05-30T07:35:45.891Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"200\",\"responseTime\":\"3163.631\"}","timestamp":"2025-05-30T07:35:45.902Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"401\",\"responseTime\":\"3009.370\"}","timestamp":"2025-05-30T10:52:53.987Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"401\",\"responseTime\":\"3004.607\"}","timestamp":"2025-05-30T10:52:58.831Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"401\",\"responseTime\":\"3001.681\"}","timestamp":"2025-05-30T10:53:01.837Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"200\",\"responseTime\":\"3099.263\"}","timestamp":"2025-05-30T10:53:23.341Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"304\",\"responseTime\":\"3101.784\"}","timestamp":"2025-05-30T10:53:23.342Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"304\",\"responseTime\":\"3079.081\"}","timestamp":"2025-05-30T10:53:26.468Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"304\",\"responseTime\":\"3150.578\"}","timestamp":"2025-05-30T10:53:26.542Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/profile/get\",\"status\":\"200\",\"responseTime\":\"3164.769\"}","timestamp":"2025-05-30T10:53:26.555Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"200\",\"responseTime\":\"3164.360\"}","timestamp":"2025-05-30T10:53:26.557Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"304\",\"responseTime\":\"3065.526\"}","timestamp":"2025-05-30T10:53:33.082Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"304\",\"responseTime\":\"3072.858\"}","timestamp":"2025-05-30T10:53:35.485Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/auth/is-auth\",\"status\":\"200\",\"responseTime\":\"3084.600\"}","timestamp":"2025-05-30T10:53:35.498Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/questions/get\",\"status\":\"200\",\"responseTime\":\"3152.203\"}","timestamp":"2025-05-30T10:53:35.566Z"}
