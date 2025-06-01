@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  MessageCircle,
+  Terminal,
   Users,
   Award,
   Search,
@@ -36,7 +36,7 @@ export default function Welcome() {
       <header className="border-b bg-background">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <MessageCircle className="h-6 w-6 text-primary" />
+            <Terminal className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">DevOverflow</span>
           </div>
           {isAuth ? (
@@ -138,7 +138,7 @@ export default function Welcome() {
               <Card>
                 <CardHeader className="space-y-1">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <MessageCircle className="h-6 w-6" />
+                    <Terminal className="h-6 w-6" />
                   </div>
                   <CardTitle>Ask & Answer Questions</CardTitle>
                   <CardDescription>
@@ -390,7 +390,7 @@ export default function Welcome() {
                         24
                       </span>
                       <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MessageCircle className="h-4 w-4" />8
+                        <Terminal className="h-4 w-4" />8
                       </span>
                     </div>
                   </div>
@@ -421,7 +421,7 @@ export default function Welcome() {
                         32
                       </span>
                       <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MessageCircle className="h-4 w-4" />
+                        <Terminal className="h-4 w-4" />
                         12
                       </span>
                     </div>
@@ -453,7 +453,7 @@ export default function Welcome() {
                         18
                       </span>
                       <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MessageCircle className="h-4 w-4" />6
+                        <Terminal className="h-4 w-4" />6
                       </span>
                     </div>
                   </div>
@@ -604,7 +604,7 @@ export default function Welcome() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="mb-4 flex items-center gap-2">
-                <MessageCircle className="h-6 w-6 text-primary" />
+                <Terminal className="h-6 w-6 text-primary" />
                 <span className="text-xl font-bold">DevOverflow</span>
               </div>
               <p className="text-sm text-muted-foreground">

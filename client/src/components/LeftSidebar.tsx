@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { TrendingUp, Users, MessageCircle, Tag, ArrowRight } from "lucide-react"
+import { TrendingUp, Users, Terminal, Tag, ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function LeftSidebar() {
@@ -105,7 +105,7 @@ export function LeftSidebar() {
           <CardContent className="space-y-2">
             <Link to="/ask">
               <Button className="w-full justify-start gap-2" size="sm">
-                <MessageCircle className="h-4 w-4" />
+                <Terminal className="h-4 w-4" />
                 Ask a Question
               </Button>
             </Link>

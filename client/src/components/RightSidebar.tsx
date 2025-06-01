@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ThumbsUp, MessageCircle, TrendingUp, Award } from "lucide-react"
+import { ThumbsUp, Terminal, TrendingUp, Award } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function RightSidebar() {
@@ -192,7 +192,7 @@ export function RightSidebar() {
                     {question.votes}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MessageCircle className="h-3 w-3" />
+                    <Terminal className="h-3 w-3" />
                     {question.answers}
                   </span>
                   <span>•</span>

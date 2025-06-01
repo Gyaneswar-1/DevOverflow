@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { ThumbsUp, MessageCircle, Clock } from "lucide-react";
+import { ThumbsUp, MessageCircle , Clock } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Link } from "react-router-dom";
 import type { QuestionInterface } from "@/types/ObjectTypes";
@@ -32,7 +32,7 @@ const HomeCards = ({ question }: { question: QuestionInterface }) => {
                   {question.upvote}
                 </span>
                 <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <MessageCircle className="h-4 w-4" />
+                  <MessageCircle  className="h-4 w-4" />
                   {question._count.answers}
                 </span>
               </div>
@@ -57,7 +57,7 @@ const HomeCards = ({ question }: { question: QuestionInterface }) => {
                   <AvatarImage
                     src={question.createdBy.profileImage?.url}
                     alt={question.createdBy.fullName}
-                    className="w-full h-full object-cover rounded-full"
+                    className="h-full w-full object-cover rounded-full"
                   />
                   <AvatarFallback>G</AvatarFallback>
                 </Avatar>

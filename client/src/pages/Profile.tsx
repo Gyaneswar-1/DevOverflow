@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  MessageCircle,
+  Terminal,
   Award,
   Edit,
   Settings,
@@ -230,11 +230,11 @@ export default function Profile() {
           <Tabs defaultValue="answers">
             <TabsList className="mb-6 grid w-full grid-cols-2">
               <TabsTrigger value="answers">
-                <MessageCircle className="mr-2 h-4 w-4" />
+                <Terminal className="mr-2 h-4 w-4" />
                 Answers
               </TabsTrigger>
               <TabsTrigger value="questions">
-                <MessageCircle className="mr-2 h-4 w-4" />
+                <Terminal className="mr-2 h-4 w-4" />
                 Questions
               </TabsTrigger>
             </TabsList>
@@ -311,7 +311,7 @@ export default function Profile() {
                           {question.votes}
                         </span>
                         <span className="flex items-center gap-1 text-sm">
-                          <MessageCircle className="h-4 w-4 text-muted-foreground" />
+                          <Terminal className="h-4 w-4 text-muted-foreground" />
                           {question.answers}
                         </span>
                       </div>

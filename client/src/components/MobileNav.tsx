@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { Menu, MessageCircle, Home, Plus, User, Tag, Users, LogIn, UserPlus } from "lucide-react"
+import { Menu, Terminal, Home, Plus, User, Tag, Users, LogIn, UserPlus } from "lucide-react"
 
 export function MobileNav() {
   const [open, setOpen] = useState(false)
@@ -23,7 +23,7 @@ export function MobileNav() {
 
   const navigation = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Questions", href: "/", icon: MessageCircle },
+    { name: "Questions", href: "/", icon: Terminal },
     { name: "Ask Question", href: "/ask", icon: Plus },
     { name: "Tags", href: "/tags", icon: Tag },
     { name: "Users", href: "/users", icon: Users },
@@ -46,7 +46,7 @@ export function MobileNav() {
       <SheetContent side="left" className="w-[300px] sm:w-[400px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2 text-left">
-            <MessageCircle className="h-6 w-6 text-primary" />
+            <Terminal className="h-6 w-6 text-primary" />
             DevOverflow
           </SheetTitle>
         </SheetHeader>

@@ -85,8 +85,8 @@ console.log("user", user);
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={profileImage || user.profileImage?.url} alt={user.fullName} />
+                <Avatar className="h-24 w-24 ">
+                  <AvatarImage src={profileImage || user.profileImage?.url} alt={user.fullName} className="object-cover"/>
                   <AvatarFallback className="text-2xl">{user.fullName.slice(0)}</AvatarFallback>
                 </Avatar>
                 <div className="absolute -bottom-2 -right-2">

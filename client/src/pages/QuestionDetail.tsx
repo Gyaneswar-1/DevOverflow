@@ -133,6 +133,7 @@ export default function QuestionDetail() {
                       Question.createdBy.profileImage?.url || "/placeholder.svg"
                     }
                     alt={Question.createdBy.fullName}
+                    className="object-cover"
                   />
                   <AvatarFallback>
                     {Question.createdBy.fullName.charAt(0).toUpperCase()}

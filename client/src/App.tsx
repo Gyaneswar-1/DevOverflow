@@ -3,11 +3,13 @@ import RouterHandler from "./routes/RouterHandler.route";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader } from "lucide-react";
 import type { RootState } from "./store/store";
+import { ThemeProvider } from "./components/ui/ThemeProvider";
 
 function App() {
   // const loading = useSelector((state: any) => state.loader.loading);
-    const loading = useSelector((state: RootState) => state.loadingReducer.loading);
-  
+  const loading = useSelector(
+    (state: RootState) => state.loadingReducer.loading
+  );
 
   if (loading) {
     <Loader />;
@@ -15,8 +17,10 @@ function App() {
 
   return (
     <div>
-      <RouterHandler />
-      <Toaster />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <RouterHandler />
+        <Toaster />
+      </ThemeProvider>
     </div>
   );
 }
