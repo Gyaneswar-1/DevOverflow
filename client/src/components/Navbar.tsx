@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, MessageCircle, MessageCircleQuestion, Search, Settings, User } from "lucide-react";
+import { LogOut, MessageCircle,  Search, Settings, User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useEffect } from "react";
 import { setUserAsync } from "@/store/actions/user.action";
@@ -13,12 +13,12 @@ import { Input } from "./ui/input";
 
 const Navbar = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate();
   const location = useLocation()
   const pfp = useSelector((state: RootState) => state.userReducer.profileImage);
   const name = useSelector((state: RootState) => state.userReducer.fullName);
+  const userID = useSelector((state: RootState) => state.userReducer.userID);
   const isLoggedIn = useSelector((state: RootState) => state.authReducer.isAuthenticated);
-  const user = useSelector((state: RootState) => state.userReducer);
+  // const user = useSelector((state: RootState) => state.userReducer);
   
   useEffect(()=>{
     dispatch(setUserAsync())
@@ -82,16 +82,16 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.profileImage || "/placeholder.svg"} alt={user.fullName} />
-                    <AvatarFallback>{user.fullName?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
+                    <AvatarImage src={pfp.url|| "/placeholder.svg"} alt={name} />
+                    <AvatarFallback>{name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.fullName}</p>
-                    <p className="text-xs leading-none text-muted-foreground">@{user.fullName}</p>
+                    <p className="text-sm font-medium leading-none">{name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">@{userID}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

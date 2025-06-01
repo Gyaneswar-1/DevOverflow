@@ -1,4 +1,4 @@
-"use client"
+
 
 import type React from "react"
 
@@ -52,7 +52,7 @@ console.log("user", user);
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = () => {
     // const { name, value } = e.target
     // setUser((prev) => ({ ...prev, [name]: value }))
   }

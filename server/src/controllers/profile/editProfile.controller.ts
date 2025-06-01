@@ -11,11 +11,18 @@ export const editProfile = async (
     res: Response,
 ): Promise<any> => {
     try {
-            
-
         const { id } = req.user
         const { fullName, userID, city, email, country, bio } = req.body
-logger.info("Editing profile for user ID:", id, fullName, userID, city, email, country, bio )
+        logger.info(
+            "Editing profile for user ID:",
+            id,
+            fullName,
+            userID,
+            city,
+            email,
+            country,
+            bio,
+        )
         const validationResult = profileUpdateSchema.safeParse({
             fullName,
             userID,
@@ -37,7 +44,7 @@ logger.info("Editing profile for user ID:", id, fullName, userID, city, email, c
         }
 
         const user = await db.user.findUnique({
-            where: {id:id},
+            where: { id: id },
         })
         if (!user) {
             return res.status(404).json(
@@ -105,38 +112,60 @@ logger.info("Editing profile for user ID:", id, fullName, userID, city, email, c
             }
         }
 
-        const updateData: any = {
-            fullName: fullName || user.fullName,
-            userID: userID || user.userID,
-            city: city || user.city,
-            email: email || user.email,
-            country: country || user.country,
-            bio: bio || user.bio,
-        }
+        let result
 
         if (response) {
-            updateData.profileImage = {
-                upsert: {
-                    where: { userId: id },
-                    create: {
+            let profileImageId = user.profileImgId;
+            
+            if (user.profileImgId) {
+                // Update existing profile image
+                await db.images.update({
+                    where: {
+                        id: user.profileImgId,
+                    },
+                    data: {
                         url: response.url,
                         fileId: response.fileId,
                     },
-                    update: {
+                })
+            } else {
+                // Create new profile image (no questionId needed since it's optional)
+                const newProfileImage = await db.images.create({
+                    data: {
                         url: response.url,
                         fileId: response.fileId,
-                    }
-                }
+                        // questionId is optional, so we don't need to provide it for profile images
+                    },
+                })
+                
+                profileImageId = newProfileImage.id;
             }
+
+            result = await db.user.update({
+                where: { id: id },
+                data: {
+                    fullName: fullName || user.fullName,
+                    userID: userID || user.userID,
+                    city: city || user.city,
+                    email: email || user.email,
+                    country: country || user.country,
+                    bio: bio || user.bio,
+                    profileImgId: profileImageId,
+                },
+            })
+        } else {
+            result = await db.user.update({
+                where: { id: id },
+                data: {
+                    fullName: fullName || user.fullName,
+                    userID: userID || user.userID,
+                    city: city || user.city,
+                    email: email || user.email,
+                    country: country || user.country,
+                    bio: bio || user.bio,
+                },
+            })
         }
-
-        const result = await db.user.update({
-            where: {
-                id: id,
-            },
-            data: updateData,
-        })
-
         return res.status(200).json(
             new ApiResponse({
                 message: "Operation completed successfully",

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 
 import HomeCards from "@/components/HomeCards";
 import { useEffect } from "react";
@@ -6,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuestionAsync } from "../store/actions/question.action";
 import { type AppDispatch, type RootState } from "@/store/store";
 import { LeftSidebar } from "@/components/LeftSidebar";
-import { Pagination } from "@/components/Pagination";
 import { RightSidebar } from "@/components/RightSidebar";
 
 export default function Home() {
@@ -17,7 +15,6 @@ export default function Home() {
     async function fetchQuestions() {
       try {
         dispatch(setQuestionAsync());
-        console.log("Question data:", question);
       } catch (error) {
         console.log(error);
       }

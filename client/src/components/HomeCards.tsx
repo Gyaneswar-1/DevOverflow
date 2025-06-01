@@ -55,8 +55,9 @@ const HomeCards = ({ question }: { question: QuestionInterface }) => {
               <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage
-                    src={question.createdBy.profileImage}
+                    src={question.createdBy.profileImage?.url}
                     alt={question.createdBy.fullName}
+                    className="w-full h-full object-cover rounded-full"
                   />
                   <AvatarFallback>G</AvatarFallback>
                 </Avatar>

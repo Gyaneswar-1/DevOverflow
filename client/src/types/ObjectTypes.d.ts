@@ -68,7 +68,9 @@ export interface QuestionInterface {
   createdBy: {
     id: string;
     fullName: string;
-    profileImage: string;
+    profileImage: {
+      url: string;
+    };
   };
   upvote: number;
   _count: {

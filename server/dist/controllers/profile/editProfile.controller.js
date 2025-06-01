@@ -83,35 +83,58 @@ export const editProfile = async (req, res) => {
                 }));
             }
         }
-        const updateData = {
-            fullName: fullName || user.fullName,
-            userID: userID || user.userID,
-            city: city || user.city,
-            email: email || user.email,
-            country: country || user.country,
-            bio: bio || user.bio,
-        };
+        let result;
         if (response) {
-            updateData.profileImage = {
-                upsert: {
-                    where: { userId: id },
-                    create: {
+            let profileImageId = user.profileImgId;
+            if (user.profileImgId) {
+                // Update existing profile image
+                await db.images.update({
+                    where: {
+                        id: user.profileImgId,
+                    },
+                    data: {
                         url: response.url,
                         fileId: response.fileId,
                     },
-                    update: {
+                });
+            }
+            else {
+                // Create new profile image (no questionId needed since it's optional)
+                const newProfileImage = await db.images.create({
+                    data: {
                         url: response.url,
                         fileId: response.fileId,
-                    }
-                }
-            };
+                        // questionId is optional, so we don't need to provide it for profile images
+                    },
+                });
+                profileImageId = newProfileImage.id;
+            }
+            result = await db.user.update({
+                where: { id: id },
+                data: {
+                    fullName: fullName || user.fullName,
+                    userID: userID || user.userID,
+                    city: city || user.city,
+                    email: email || user.email,
+                    country: country || user.country,
+                    bio: bio || user.bio,
+                    profileImgId: profileImageId,
+                },
+            });
         }
-        const result = await db.user.update({
-            where: {
-                id: id,
-            },
-            data: updateData,
-        });
+        else {
+            result = await db.user.update({
+                where: { id: id },
+                data: {
+                    fullName: fullName || user.fullName,
+                    userID: userID || user.userID,
+                    city: city || user.city,
+                    email: email || user.email,
+                    country: country || user.country,
+                    bio: bio || user.bio,
+                },
+            });
+        }
         return res.status(200).json(new ApiResponse({
             message: "Operation completed successfully",
             data: result,
