@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -7,7 +6,6 @@ import { ThumbsUp, Terminal, TrendingUp, Award } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function RightSidebar() {
-  const [visibleQuestions, setVisibleQuestions] = useState(2)
 
   // Mock data for top questions
   const topQuestions = [
@@ -47,95 +45,10 @@ export function RightSidebar() {
       tags: ["javascript", "async"],
       timePosted: "1 week ago",
     },
-    {
-      id: 4,
-      title: "CSS Grid vs Flexbox: When to use which?",
-      votes: 128,
-      answers: 15,
-      author: "Sarah Wilson",
-      authorUsername: "sarahwilson",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "SW",
-      tags: ["css", "layout"],
-      timePosted: "1 week ago",
-    },
-    {
-      id: 5,
-      title: "Node.js memory management and garbage collection",
-      votes: 119,
-      answers: 12,
-      author: "David Brown",
-      authorUsername: "davidbrown",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "DB",
-      tags: ["node.js", "memory"],
-      timePosted: "2 weeks ago",
-    },
-    {
-      id: 6,
-      title: "Database indexing strategies for better performance",
-      votes: 115,
-      answers: 20,
-      author: "Lisa Chen",
-      authorUsername: "lisachen",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "LC",
-      tags: ["database", "performance"],
-      timePosted: "2 weeks ago",
-    },
-    {
-      id: 7,
-      title: "Security best practices for REST APIs",
-      votes: 108,
-      answers: 14,
-      author: "Tom Anderson",
-      authorUsername: "tomanderson",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "TA",
-      tags: ["api", "security"],
-      timePosted: "3 weeks ago",
-    },
-    {
-      id: 8,
-      title: "Docker containerization for development workflow",
-      votes: 102,
-      answers: 16,
-      author: "Emma Davis",
-      authorUsername: "emmadavis",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "ED",
-      tags: ["docker", "devops"],
-      timePosted: "3 weeks ago",
-    },
-    {
-      id: 9,
-      title: "GraphQL vs REST: Pros and cons comparison",
-      votes: 98,
-      answers: 22,
-      author: "Alex Rodriguez",
-      authorUsername: "alexrodriguez",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "AR",
-      tags: ["graphql", "api"],
-      timePosted: "1 month ago",
-    },
-    {
-      id: 10,
-      title: "Machine learning model deployment strategies",
-      votes: 95,
-      answers: 11,
-      author: "Rachel Green",
-      authorUsername: "rachelgreen",
-      authorImage: "/placeholder.svg?height=24&width=24",
-      authorInitials: "RG",
-      tags: ["ml", "deployment"],
-      timePosted: "1 month ago",
-    },
+
   ]
 
-  const loadMore = () => {
-    setVisibleQuestions((prev) => Math.min(prev + 3, topQuestions.length))
-  }
+
 
   // Mock data for trending topics
   const trendingTopics = [
@@ -180,7 +93,7 @@ export function RightSidebar() {
             <CardDescription>Most upvoted questions this month</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {topQuestions.slice(0, visibleQuestions).map((question) => (
+            {topQuestions.slice(0, 3).map((question) => (
               <div key={question.id} className="space-y-2 border-b pb-4 last:border-b-0 last:pb-0">
                 <Link to={`/questions/${question.id}`} className="block">
                   <h4 className="text-sm font-medium leading-tight hover:text-primary">{question.title}</h4>
@@ -218,11 +131,6 @@ export function RightSidebar() {
               </div>
             ))}
 
-            {visibleQuestions < topQuestions.length && (
-              <Button onClick={loadMore} variant="outline" size="sm" className="w-full">
-                Load More ({topQuestions.length - visibleQuestions} remaining)
-              </Button>
-            )}
           </CardContent>
         </Card>
 

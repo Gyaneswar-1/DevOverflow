@@ -138,8 +138,8 @@ export default function Profile() {
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={user.profileImage?.url} alt={user.fullName} />
+                <Avatar className="h-24 w-24 ">
+                  <AvatarImage src={user.profileImage?.url} alt={user.fullName} className="object-cover" />
                   <AvatarFallback className="text-2xl">
                     {user.fullName.slice(0, 2)}
                   </AvatarFallback>

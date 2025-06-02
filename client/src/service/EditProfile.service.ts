@@ -2,32 +2,35 @@ import axios from "axios";
 import { API } from "./API";
 import type { UserProfileInterface } from "@/types/ObjectTypes";
 
-export const getProfileService = async ({}): Promise<{
+export const editProfileService = async (formData: FormData): Promise<{
   success: boolean;
   message: string;
   data?: UserProfileInterface;
 }> => {
   try {
-    const response = await axios.put(`${API}/profile/edit`, {
+    const response = await axios.put(`${API}/profile/edit`, formData, {
       withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     if (response.status === 200) {
       return {
         success: true,
-        message: "User profile fetch successful",
+        message: "Profile updated successfully",
         data: response.data.data,
       };
     } else {
       return {
         success: false,
-        message: "User Profile fetch failed",
+        message: "Profile update failed",
       };
     }
-  } catch (error) {
+  } catch (error: any) {
     return {
       success: false,
-      message: "User Profile fetch failed",
+      message: error.response?.data?.message || "Profile update failed",
     };
   }
 };

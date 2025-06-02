@@ -89,6 +89,23 @@ export const editProfile = async (
 
         let response = null
         if (req.file && req.file.path) {
+            if (user.profileImgId) {
+                // Delete existing profile image if it exists
+                const existingImage = await db.images.findUnique({
+                    where: { id: user.profileImgId },
+                })
+                if (existingImage?.fileId) {
+                    try {
+                        await imagekit.deleteFile(existingImage.fileId)
+                        await db.images.delete({
+                            where: { id: user.profileImgId },
+                        })
+                    } catch (error) {
+                        logger.error("Error deleting existing image", error)
+                    }
+                }
+            }
+
             const filePath = req.file.path
             const fileBuffer = fs.readFileSync(filePath)
             try {
@@ -115,19 +132,35 @@ export const editProfile = async (
         let result
 
         if (response) {
-            let profileImageId = user.profileImgId;
-            
+            let profileImageId = user.profileImgId
+
             if (user.profileImgId) {
-                // Update existing profile image
-                await db.images.update({
-                    where: {
-                        id: user.profileImgId,
-                    },
-                    data: {
-                        url: response.url,
-                        fileId: response.fileId,
-                    },
+                // Check if the image record actually exists before updating
+                const existingImageRecord = await db.images.findUnique({
+                    where: { id: user.profileImgId },
                 })
+
+                if (existingImageRecord) {
+                    // Update existing profile image
+                    await db.images.update({
+                        where: {
+                            id: user.profileImgId,
+                        },
+                        data: {
+                            url: response.url,
+                            fileId: response.fileId,
+                        },
+                    })
+                } else {
+                    // Image record doesn't exist, create a new one
+                    const newProfileImage = await db.images.create({
+                        data: {
+                            url: response.url,
+                            fileId: response.fileId,
+                        },
+                    })
+                    profileImageId = newProfileImage.id
+                }
             } else {
                 // Create new profile image (no questionId needed since it's optional)
                 const newProfileImage = await db.images.create({
@@ -137,10 +170,9 @@ export const editProfile = async (
                         // questionId is optional, so we don't need to provide it for profile images
                     },
                 })
-                
-                profileImageId = newProfileImage.id;
-            }
 
+                profileImageId = newProfileImage.id
+            }
             result = await db.user.update({
                 where: { id: id },
                 data: {

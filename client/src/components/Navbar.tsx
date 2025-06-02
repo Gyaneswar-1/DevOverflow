@@ -115,7 +115,7 @@ const Navbar = () => {
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage
-                      src={pfp.url || "/placeholder.svg"}
+                      src={pfp?.url || "/placeholder.svg"}
                       alt={name}
                       className="object-cover"
                     />
