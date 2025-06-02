@@ -81,3 +81,14 @@ export interface QuestionInterface {
 export interface AuthState {
   isAuthenticated: boolean;
 }
+
+export interface answerInterface {
+  id: string;
+  content: string;
+  questionId: string;
+  createdById:string;
+  upvote:number;     
+  downvote:number;
+  isAccepted :boolean;
+  createdAt:string;
+}

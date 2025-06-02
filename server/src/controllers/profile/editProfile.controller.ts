@@ -71,7 +71,6 @@ export const editProfile = async (
             }
         }
 
-        // Check if email already exists (if being updated)
         if (email && email !== user.email) {
             const existingUser = await db.user.findUnique({
                 where: { email },
@@ -90,7 +89,6 @@ export const editProfile = async (
         let response = null
         if (req.file && req.file.path) {
             if (user.profileImgId) {
-                // Delete existing profile image if it exists
                 const existingImage = await db.images.findUnique({
                     where: { id: user.profileImgId },
                 })
@@ -135,13 +133,11 @@ export const editProfile = async (
             let profileImageId = user.profileImgId
 
             if (user.profileImgId) {
-                // Check if the image record actually exists before updating
                 const existingImageRecord = await db.images.findUnique({
                     where: { id: user.profileImgId },
                 })
 
                 if (existingImageRecord) {
-                    // Update existing profile image
                     await db.images.update({
                         where: {
                             id: user.profileImgId,
@@ -152,7 +148,6 @@ export const editProfile = async (
                         },
                     })
                 } else {
-                    // Image record doesn't exist, create a new one
                     const newProfileImage = await db.images.create({
                         data: {
                             url: response.url,
@@ -162,12 +157,10 @@ export const editProfile = async (
                     profileImageId = newProfileImage.id
                 }
             } else {
-                // Create new profile image (no questionId needed since it's optional)
                 const newProfileImage = await db.images.create({
                     data: {
                         url: response.url,
                         fileId: response.fileId,
-                        // questionId is optional, so we don't need to provide it for profile images
                     },
                 })
 

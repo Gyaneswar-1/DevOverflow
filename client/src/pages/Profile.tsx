@@ -8,14 +8,14 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs,  TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Terminal,
-  Award,
   Edit,
   Settings,
   LogOut,
-  ThumbsUp,
+  MessageCircleQuestionIcon,
+  Text,
+  
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,6 +27,8 @@ import { logoutService } from "@/service/logout.service";
 import React from "react";
 import { clearUser } from "@/store/reducers/user.reducer";
 import { logout } from "@/store/reducers/auth.reducer";
+import UserAnswers from "@/components/UserAnswers";
+import UserQuestions from "@/components/UserQuestions";
 
 export default function Profile() {
   const [loading, setLoading] = React.useState(false);
@@ -42,15 +44,15 @@ export default function Profile() {
 
   const handleLogout = async () => {
     try {
-      setLoading(true); 
+      setLoading(true);
       await logoutService();
       dispatch(clearUser());
-      dispatch(logout())
-      navigate("/welcome"); 
+      dispatch(logout());
+      navigate("/welcome");
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -77,59 +79,8 @@ export default function Profile() {
     },
   };
 
-  // Mock questions data
-  const questions = [
-    {
-      id: 1,
-      title: "How to optimize React rendering performance?",
-      votes: 32,
-      answers: 8,
-      timePosted: "2 weeks ago",
-      tags: ["react", "performance", "optimization"],
-    },
-    {
-      id: 2,
-      title: "Best practices for handling API errors in Next.js?",
-      votes: 18,
-      answers: 5,
-      timePosted: "1 month ago",
-      tags: ["next.js", "error-handling", "api"],
-    },
-  ];
 
   // Mock answers data
-  const answers = [
-    {
-      id: 1,
-      questionTitle: "How do I implement authentication in Next.js?",
-      questionId: 101,
-      content:
-        "I would recommend using NextAuth.js. It's specifically designed for Next.js and provides a lot of functionality out of the box...",
-      votes: 15,
-      isAccepted: true,
-      timePosted: "3 days ago",
-    },
-    {
-      id: 2,
-      questionTitle: "What's the difference between useMemo and useCallback?",
-      questionId: 102,
-      content:
-        "The main difference is that useMemo is used to memoize values while useCallback is used to memoize functions...",
-      votes: 24,
-      isAccepted: true,
-      timePosted: "1 week ago",
-    },
-    {
-      id: 3,
-      questionTitle: "How to implement dark mode in a React application?",
-      questionId: 103,
-      content:
-        "You can use CSS variables combined with a context provider to implement a dark mode toggle...",
-      votes: 12,
-      isAccepted: false,
-      timePosted: "2 weeks ago",
-    },
-  ];
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -139,7 +90,11 @@ export default function Profile() {
             <CardHeader className="text-center">
               <div className="mx-auto mb-4">
                 <Avatar className="h-24 w-24 ">
-                  <AvatarImage src={user.profileImage?.url} alt={user.fullName} className="object-cover" />
+                  <AvatarImage
+                    src={user.profileImage?.url}
+                    alt={user.fullName}
+                    className="object-cover"
+                  />
                   <AvatarFallback className="text-2xl">
                     {user.fullName.slice(0, 2)}
                   </AvatarFallback>
@@ -166,9 +121,11 @@ export default function Profile() {
                   {user.city || "no city"}, {user.country || "no country"}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {`Joined ${formatDistanceToNow(new Date(user.createdAt), {
-                    addSuffix: true,
-                  })}`}
+                  {user.createdAt
+                    ? `Joined ${formatDistanceToNow(new Date(user.createdAt), {
+                        addSuffix: true,
+                      })}`
+                    : "Joined date not available"}
                 </p>
               </div>
 
@@ -227,108 +184,22 @@ export default function Profile() {
         </div>
 
         <div className="md:col-span-2">
-          <Tabs defaultValue="answers">
+          <Tabs defaultValue="questions">
             <TabsList className="mb-6 grid w-full grid-cols-2">
-              <TabsTrigger value="answers">
-                <Terminal className="mr-2 h-4 w-4" />
-                Answers
-              </TabsTrigger>
               <TabsTrigger value="questions">
-                <Terminal className="mr-2 h-4 w-4" />
+                <MessageCircleQuestionIcon className="mr-2 h-4 w-4" />
                 Questions
+              </TabsTrigger>
+              <TabsTrigger value="answers">
+                <Text className="mr-2 h-4 w-4" />
+                Answers
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="answers" className="space-y-6">
-              <h2 className="text-xl font-semibold">Recent Answers</h2>
+          <UserAnswers/>
+          <UserQuestions />
 
-              {answers.map((answer) => (
-                <Card key={answer.id} className="overflow-hidden">
-                  <CardHeader className="bg-muted/50 pb-2">
-                    <Link
-                      to={`/questions/${answer.questionId}`}
-                      className="hover:underline"
-                    >
-                      <h3 className="font-semibold">{answer.questionTitle}</h3>
-                    </Link>
-                  </CardHeader>
-                  <CardContent className="pt-4">
-                    <p className="line-clamp-2 text-sm text-muted-foreground">
-                      {answer.content}
-                    </p>
-
-                    <div className="mt-4 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="flex items-center gap-1 text-sm">
-                          <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                          {answer.votes}
-                        </span>
-                        {answer.isAccepted && (
-                          <Badge
-                            variant="default"
-                            className="flex items-center gap-1 bg-green-100 text-green-800"
-                          >
-                            <Award className="h-3 w-3" />
-                            Accepted
-                          </Badge>
-                        )}
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {answer.timePosted}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="questions" className="space-y-6">
-              <h2 className="text-xl font-semibold">Your Questions</h2>
-
-              {questions.map((question) => (
-                <Card key={question.id}>
-                  <CardHeader className="pb-2">
-                    <Link
-                      to={`/questions/${question.id}`}
-                      className="hover:underline"
-                    >
-                      <h3 className="font-semibold">{question.title}</h3>
-                    </Link>
-                  </CardHeader>
-                  <CardContent className="pt-2">
-                    <div className="mb-2 flex flex-wrap gap-2">
-                      {question.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1 text-sm">
-                          <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                          {question.votes}
-                        </span>
-                        <span className="flex items-center gap-1 text-sm">
-                          <Terminal className="h-4 w-4 text-muted-foreground" />
-                          {question.answers}
-                        </span>
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {question.timePosted}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-
-              <div className="flex justify-center">
-                <Link to="/ask">
-                  <Button>Ask a New Question</Button>
-                </Link>
-              </div>
-            </TabsContent>
+           
           </Tabs>
         </div>
       </div>

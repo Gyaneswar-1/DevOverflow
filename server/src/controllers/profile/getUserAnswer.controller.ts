@@ -1,33 +1,39 @@
-import { ApiResponse } from "../../utils/ApiResponse.js"
-import db from "../../db/db.js"
 import type { Request, Response } from "express"
+import db from "../../db/db.js"
+import { ApiResponse } from "../../utils/ApiResponse.js"
+import logger from "../../helper/logger.js"
 
-export const getAnswerByUser = async (req: Request | any, res: Response): Promise<any> => {
+export const getUserAnswers = async (
+    req: Request | any,
+    res: Response,
+): Promise<any> => {
     try {
+        
         const { id } = req.user
-
-        const answer = await db.answers.findMany({
+        
+        const result = await db.answers.findMany({
             where: {
                 createdById: id,
             },
             select: {
                 id: true,
                 content: true,
-                createdAt: true,
                 upvote: true,
-                downvote: true,
                 isAccepted: true,
+                createdAt: true,
             },
         })
+
         return res.status(200).json(
             new ApiResponse({
-                message: "Answer retrieved successfully",
+                message: "Operation completed successfully",
+                data: result,
                 statusCode: 200,
                 success: true,
-                data: answer,
             }),
         )
     } catch (error) {
+        logger.error(error)
         return res.status(500).json(
             new ApiResponse({
                 message: "Internal server error",
