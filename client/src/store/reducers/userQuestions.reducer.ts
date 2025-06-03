@@ -1,5 +1,5 @@
 import type { QuestionInterface } from "@/types/ObjectTypes";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { getUserQuestionsAsync } from "../actions/userQuestion.action";
 
 const initialState: {
@@ -16,7 +16,7 @@ const userQuestionsSlice = createSlice({
   name: "userQuestions",
   initialState,
   reducers: {
-    setUserQuestions: (state, action) => {
+    setUserQuestions: (state, action:PayloadAction<QuestionInterface[]>) => {
       state.questions = action.payload;
       state.isLoading = false;
       state.isError = false;
@@ -33,7 +33,7 @@ const userQuestionsSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
       })
-      .addCase(getUserQuestionsAsync.fulfilled, (state, action) => {
+      .addCase(getUserQuestionsAsync.fulfilled, (state, action:PayloadAction<QuestionInterface[]>) => {
         state.isLoading = false;
         state.isError = false;
         state.questions = action.payload;

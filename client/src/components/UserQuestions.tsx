@@ -100,8 +100,8 @@ function UserQuestions() {
         ))}
 
         <div className="flex justify-center">
-          <Link to="/ask">
-            <Button>Ask a New Question</Button>
+          <Link to="#">
+            <Button>Load more</Button>
           </Link>
         </div>
       </TabsContent>

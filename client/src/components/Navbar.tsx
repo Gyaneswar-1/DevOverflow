@@ -47,7 +47,7 @@ const Navbar = () => {
     dispatch(setUserAsync());
   }, [dispatch, setUserAsync]);
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 h-16">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/70 h-16">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo and Mobile Menu */}
         <div className="flex items-center gap-4">

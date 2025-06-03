@@ -1,20 +1,20 @@
 import axios from "axios";
 import { API } from "./API";
-import type { QuestionInterface } from "@/types/ObjectTypes";
+import type { userAnswerInterface } from "@/types/ObjectTypes";
 
 export const getUserAnswerService = async (): Promise<{
   success: boolean;
   message: string;
-  data?: QuestionInterface[];
+  data?: userAnswerInterface[];
 }> => {
   try {
-    const response = await axios.get(`${API}/profile/get-questions`, {
+    const response = await axios.get(`${API}/profile/get-answers`, {
       withCredentials: true,
     });
     if (response.status === 200) {
       return {
         success: true,
-        message: "Questions fetched successfully",
+        message: "Answers fetched successfully",
         data: response.data.data,
       };
     } else {
@@ -27,7 +27,7 @@ export const getUserAnswerService = async (): Promise<{
   } catch (error) {
     return {
       success: false,
-      message: `Failed to fetch questions: ${error}`,
+      message: `Failed to fetch Answers: ${error}`,
     };
   }
 };
