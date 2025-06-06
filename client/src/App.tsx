@@ -8,18 +8,18 @@ import { ThemeProvider } from "./components/ui/ThemeProvider";
 function App() {
   // const loading = useSelector((state: any) => state.loader.loading);
   const loading = useSelector(
-    (state: RootState) => state.loadingReducer.loading
+    (state: RootState) => state.authReducer.isLoading
   );
-
-  if (loading) {
-    <Loader />;
-  }
 
   return (
     <div>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <RouterHandler />
-        <Toaster />
+        
+          <>
+            <RouterHandler />
+            <Toaster />
+          </>
+      
       </ThemeProvider>
     </div>
   );

@@ -20,7 +20,6 @@ import { useSelector } from "react-redux";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { userProfileSchema } from "@/validation/userProfile.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { UserProfileInterface } from "@/types/ObjectTypes";
 import { z } from "zod";
 import { toast } from "sonner";
 import { editProfileService } from "@/service/EditProfile.service";

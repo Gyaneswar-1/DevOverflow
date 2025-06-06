@@ -80,6 +80,7 @@ export interface QuestionInterface {
 
 export interface AuthState {
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 export interface userAnswerInterface {
@@ -92,13 +93,11 @@ export interface userAnswerInterface {
 
 export interface answerInterface {
   downvote: number;
-  createdBy:{
+  createdBy: {
     id: string;
     fullName: string;
-    profileImage:{
-
-    }
-  }
+    profileImage: {};
+  };
 }
 
 //  {

@@ -14,22 +14,23 @@ datasource db {
 }
 
 model User {
-  id           String      @id @default(uuid())
-  email        String?     @unique @db.VarChar(255)
-  fullName     String?     @db.VarChar(100)
-  userID       String?     @unique @db.VarChar(50)
-  password     String?     @db.VarChar(255)
-  city         String?     @db.VarChar(255)
-  country      String?     @db.VarChar(255)
-  bio          String?     @db.VarChar(500)
-  questions    Questions[]
-  answers      Answers[]
-  profileImage Images?     @relation(fields: [profileImgId], references: [id])
-  profileImgId String?     @unique
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt()
-  isAdmin      Boolean     @default(false)
-  isVerified   Boolean     @default(false)
+  id            String      @id @default(uuid())
+  email         String?     @unique @db.VarChar(255)
+  fullName      String?     @db.VarChar(100)
+  userID        String?     @unique @db.VarChar(50)
+  password      String?     @db.VarChar(255)
+  city          String?     @db.VarChar(255)
+  country       String?     @db.VarChar(255)
+  bio           String?     @db.VarChar(500)
+  questions     Questions[]
+  answers       Answers[]
+  profileImage  Images?     @relation(fields: [profileImgId], references: [id])
+  profileImgId  String?     @unique
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt()
+  isAdmin       Boolean     @default(false)
+  isVerified    Boolean     @default(false)
+  questionVotes Votes[]
 }
 
 model Questions {
@@ -37,23 +38,39 @@ model Questions {
   title       String?   @db.VarChar(255)
   images      Images[]
   answers     Answers[]
-  upvote      Int       @default(0)
-  downvote    Int       @default(0)
   description String?   @db.Text
   tags        String[]  @default(["no tag"])
   createdAt   DateTime  @default(now())
   createdById String
   createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  Votes       Votes[]
+}
+
+model Votes {
+  id         String    @id @default(uuid())
+  type       VoteType
+  uidID      String
+  questionID String
+  user       User      @relation(fields: [uidID], references: [id], onDelete: Cascade)
+  question   Questions @relation(fields: [questionID], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+
+  @@unique([uidID,questionID])
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }
 
 model Images {
-  id         String    @id @default(uuid())
-  url        String?   @db.VarChar(500)
-  fileId     String?   @db.VarChar(500)
+  id         String     @id @default(uuid())
+  url        String?    @db.VarChar(500)
+  fileId     String?    @db.VarChar(500)
   questionId String?
-  createdAt  DateTime  @default(now())
+  createdAt  DateTime   @default(now())
   question   Questions? @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  user       User?     @relation()
+  user       User?      @relation()
 }
 
 model Answers {
